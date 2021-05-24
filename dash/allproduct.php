@@ -1,3 +1,7 @@
+<?php
+  session_start();
+  // ini_set("display_errors","0");
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -28,9 +32,19 @@
 
     <!-- Custom Theme Style -->
     <link href="../vendors/css/custom.min.css" rel="stylesheet">
+    <style type="text/css">
+      .form-control{
+        margin:0px;border: 1px solid #ced4da;
+        padding: 6px;
+        border-radius: 10px;
+      }
+    </style>
   </head>
 
   <body class="nav-md" >
+<?php 
+  include("../connect.php");
+?>
     <div class="container body">
       <div class="main_container">
         <div class="col-md-3 left_col">
@@ -211,74 +225,55 @@
         <div class="right_col" role="main">
           <!-- top tiles -->
           <div class="row" style="display: inline-block;" >
-          <div class="tile_count">
-            <div class="col-md-2 col-sm-4  tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Total Users</span>
-              <div class="count">2500</div>
-              <span class="count_bottom"><i class="green">4% </i> From last Week</span>
-            </div>
-            <div class="col-md-2 col-sm-4  tile_stats_count">
-              <span class="count_top"><i class="fa fa-clock-o"></i> Average Time</span>
-              <div class="count">123.50</div>
-              <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> From last Week</span>
-            </div>
-            <div class="col-md-2 col-sm-4  tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Total Males</span>
-              <div class="count green">2,500</div>
-              <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
-            </div>
-            <div class="col-md-2 col-sm-4  tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Total Females</span>
-              <div class="count">4,567</div>
-              <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> From last Week</span>
-            </div>
-            <div class="col-md-2 col-sm-4  tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Total Collections</span>
-              <div class="count">2,315</div>
-              <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
-            </div>
-            <div class="col-md-2 col-sm-4  tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Total Connections</span>
-              <div class="count">7,325</div>
-              <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
-            </div>
+            <!-- <h1>THÊM SẢN PHẨM</h1> -->
           </div>
-        </div>
           <!-- /top tiles -->
 
-          <div class="row">
-            <div class="col-md-12 col-sm-12 ">
+          <div class="row" style="margin: 50px;">
+            <div class="col-md-12 col-sm-12 " >
+              <div style="text-align: center;font-size: 26px">
+                <p><h1 >TẤT CẢ SẢN PHẨM</h1></p>
+              </div>
               <table class="table">
+                     <?php 
+                        $result = mysqli_query($conn,"SELECT * FROM products ORDER BY id DESC");
+                      ?>
+
                 <thead class="thead-dark">
                   <tr>
-                    <th scope="col">Mã đơn hàng</th>
-                    <th scope="col">Sản phẩm</th>
-                    <th scope="col">Tên khách hàng</th>
-                    <th scope="col">Tổng tiền</th>
-                    <th scope="col">Địa chỉ nhận</th>
+                    <th scope="col">Ảnh</th>
+                    <th scope="col">Mã Sản phẩm</th>
+                    <th scope="col">Tên Sản phẩm</th>
+                    <th scope="col">Size</th>
+                    <th scope="col">Số lượng</th>
+                    <th scope="col">Giá tiền</th>
+                    <th scope="col">XÓA/SỬA</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>@twitter</td>
-                  </tr>
+                  <?php
+                    // output data of each row
+                    while($row = mysqli_fetch_assoc($result)) {
+                     ?>
+                        <tr>
+                          <td><img src="../<?php echo $row['images']; ?>" style="width: 120px;height: 120px;"/></td>
+                          <th scope="row" ><?php echo $row['id']?></th>
+                          <td><?php echo $row['name']; ?></td>
+                          <td><?php echo $row['size']?></td>
+                          <td><?php echo $row['status']?></td>
+                          <td><?php echo number_format($row['price']);?></td>
+                          <td>
+                             <button type="button" class="btn btn-danger" onclick="return confirm('Bạn chắc chắn xóa!!?')"><a href="delproduct.php?id=<?php echo $row['id']; ?>">Xóa</a></button>
+                             <button type="button" class="btn btn-warning" onclick="thongbao();">Chỉnh sửa</button>
+                          </td>
+                        </tr>
+                      <?php
+                    } ?>
                 </tbody>
               </table>
             </div>
         </div>
         <!-- /page content -->
-
-        <!-- footer content -->
-<!--         <footer>
-          <div class="pull-right">
-            Thu Thang <a href="https://colorlib.com">Vku</a>
-          </div>
-          <div class="clearfix"></div>
-        </footer> -->
-        <!-- /footer content -->
       </div>
     </div>
 
@@ -321,6 +316,15 @@
     <script src="../vendors/daterangepicker.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="../vendors/custom.min.js"></script>
+    <script type="text/javascript">
+      function thongbao(){
+        alert("Chưa hoàn thiện hành động này!");
+      }
+      function del(){
+        alert("Xoa!");
+      }
+      
+    </script>
 	
   </body>
 </html>

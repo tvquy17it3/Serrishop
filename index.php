@@ -75,7 +75,7 @@
                                 
                             if($level == 1)
                             {
-                              echo '<a href="dash/index.html">Xin chào: '.$name.'</a> <a href="logout.php">Đăng xuất</a>';
+                              echo '<a href="dash/index.php">Xin chào: '.$name.'</a> <a href="logout.php">Đăng xuất</a>';
                             }
                             else
                             {
@@ -112,7 +112,7 @@
                   <p>Serri<strong>Shop</strong> <span>Your Shopping Partner</span></p>
                 </a>
                 <!-- img based logo -->
-                <!-- <a href="index.html"><img src="img/logo.jpg" alt="logo img"></a> -->
+                <!-- <a href="index.php"><img src="img/logo.jpg" alt="logo img"></a> -->
               </div>
               <!-- / logo  -->
                <!-- cart box -->
@@ -178,7 +178,7 @@
           <div class="navbar-collapse collapse">
             <!-- Left nav -->
             <ul class="nav navbar-nav">
-              <!-- <li><a href="index.html">Trang chủ</a></li> -->
+              <!-- <li><a href="index.php">Trang chủ</a></li> -->
               <li><a href="product.html">HÀNG MỚI</a></li>
               <li><a href="product.html">SẢN PHẨM<span class="caret"></span></a>
                 <ul class="dropdown-menu">  

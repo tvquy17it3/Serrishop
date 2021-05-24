@@ -50,7 +50,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><span>SERRI SHOP</span></a>
+              <a href="index.php" class="site_title"><span>SERRI SHOP</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -72,7 +72,7 @@
               <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                  <!-- <li><a href="index.html"><i class="fa fa-server" aria-hidden="true"></i>Hoạt động</a></li> -->
+                  <!-- <li><a href="index.php"><i class="fa fa-server" aria-hidden="true"></i>Hoạt động</a></li> -->
                   <li><a ><i class="fa fa-edit"></i>Đơn hàng<span class="fa fa-chevron-down" aria-hidden="true"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="index.php">Chưa xác nhận</a></li>
@@ -97,8 +97,8 @@
                   <li><a><i class="fa fa-product-hunt" aria-hidden="true"></i>Sản phẩm<span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="addproduct.php">Thêm sản phẩm</a></li>
-                      <li><a href="#">Trang phục</a></li>
-                      <li><a href="#">Phụ kiện</a></li>
+                      <li><a href="allproduct.php">Tât cả sản phẩm</a></li>
+                      <li><a href="code.php">Mã giảm giá</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-picture-o" aria-hidden="true"></i>Banner <span class="fa fa-chevron-down"></span></a>
@@ -115,7 +115,7 @@
                       <li><a href="#">Đã khóa</a></li>
                     </ul>
                   </li>   
-                  <li><a href="../index.html"><i class="fa fa-home" aria-hidden="true"></i>Về trang chính</a></li>            
+                  <li><a href="../index.php"><i class="fa fa-home" aria-hidden="true"></i>Về trang chính</a></li>            
                 </ul>
               </div>
 
@@ -242,11 +242,11 @@
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label for="inputEmail4"> Giá:</label>
-                    <input type="text" class="form-control" name="giasp" required="">
+                    <input type="text" class="form-control" name="giasp" required="" value="298,000₫">
                   </div>
                   <div class="form-group col-md-6">
                     <label for="inputPassword4">Size:</label>
-                    <input type="text" class="form-control" name="sizesp" required="">
+                    <input type="text" class="form-control" name="sizesp" required="" value="S, M">
                   </div>
                 </div>
                 <div class="form-row">
@@ -257,14 +257,19 @@
                   <div class="form-group col-md-3">
                     <label for="inputState">Danh mục:</label>
                     <select name="danhmucsp" class="form-control" required="">
-                      <option selected value="ao">Áo</option>
-                      <option value="quan">Quần</option>
-                      <option value="dam">Đầm</option>
+                      <option selected value="Áo sơ mi">Áo sơ mi</option>
+                      <option value="Áo kiểu">Áo kiểu</option>
+                      <option value="Áo thun">Áo thun</option>
+                      <option value="Áo khoác">Áo khoác</option>
+                      <option value="Chân váy">Chân váy</option>
+                      <option value="Quần dài">Quần dài</option>
+                      <option value="Quần short">Quần short</option>
+                      <option value="Đầm">Đầm</option>
                     </select>
                   </div>
                   <div class="form-group col-md-3">
                     <label for="inputZip">Số lượng:</label>
-                    <input type="text" class="form-control" name="soluongsp" required="">
+                    <input type="text" class="form-control" name="soluongsp" required="" value="5">
                   </div>
                 </div>
                 <div class="form-group" >
@@ -293,30 +298,36 @@
                           {// file hợp lệ, tiến hành upload
                             $path = "../img/products/";
                             $tmp_name = $_FILES['file']['tmp_name'];
-                            $namef = rand(100,100000).$_FILES['file']['name'];
+                            $namef = "serrishop".rand(100,100000).$_FILES['file']['name'];
                             $type = $_FILES['file']['type']; 
                             $size = $_FILES['file']['size']; 
 
-                            $tensp = $_POST['tensp'];
-                            $giasp = $_POST['giasp'];
+                            $tensp  = $_POST['tensp'];
+                            $giasp0 = trim($_POST['giasp']);
+                            $giasp1 = str_replace(",","",$giasp0);
+                            $giasp  = str_replace("₫","",$giasp1);
+
                             $sizesp = $_POST['sizesp'];
                             $mausp = $_POST['mausp'];
                             $danhmucsp =$_POST['danhmucsp'];
                             $soluongsp= $_POST['soluongsp'];
                             $mieuta = $_POST['mieutasp'];
                             $pathfile = "img/products/".$namef;
-                            
-                            // Upload file
-                            move_uploaded_file($tmp_name,$path.$namef);
-                            echo "<hr style='width:500px;'/><p style='color: blue;font-size: 26px;margin:20px;'>";
-                            echo "Thêm thành công!<br/>";
-                            echo "Đường dẫn của ảnh: ".$pathfile."<br/>";
-                            echo "Kích thước ảnh: ".$size;
-                            echo "</p>";
-                            
+                            $ratings = rand(1,2);
 
-                            $upload_query =mysqli_query($conn,"INSERT INTO products(name,price, size, colors, category, images, description, status)  
-                              VALUES ('".$tensp."','".$giasp."','".$sizesp."','".$mausp."','".$danhmucsp."','".$pathfile."','".$mieuta."','".$soluongsp."')");
+                            $upload_query =mysqli_query($conn,"INSERT INTO products(name,price, size, colors, category, images, description, status,ratings)  
+                              VALUES ('".$tensp."','".$giasp."','".$sizesp."','".$mausp."','".$danhmucsp."','".$pathfile."','".$mieuta."','".$soluongsp."','".$ratings."')");
+                            if ($upload_query) {
+                                 // Upload file
+                                move_uploaded_file($tmp_name,$path.$namef);
+                                echo "<hr style='width:500px;'/><p style='color: blue;font-size: 26px;margin:20px;'>";
+                                echo "Thêm thành công!<br/>";
+                                echo "Đường dẫn của ảnh: ".$pathfile."<br/>";
+                                // echo "Kích thước ảnh: ".$size;
+                                echo "</p>";
+                            }else {
+                                echo "Đã có lỗi xảy ra: ".mysqli_error($conn);
+                            }
                           }
                         }
                         else
