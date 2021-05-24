@@ -246,7 +246,7 @@
 
                     $upload_query =mysqli_query($conn,"INSERT INTO code(idcode, percent, counts, start, finish) VALUES ('".$ipcode."',".$ipgiam.",'".$ipcounts."','".$ipstart."','".$ipfinish."')");
                     if ($upload_query) {
-                      echo "<h5 style='color: blue'>Thêm thành công mã: <i>".$ipcode.", giảm:".$ipgiam."%</i></h5>";
+                      echo "<h5 style='color: blue'>Thêm thành công mã: <i>".$ipcode.", giảm: ".$ipgiam."%</i></h5>";
                     }else {
                       echo "Đã có lỗi xảy ra: ".mysqli_error($conn);
                     }

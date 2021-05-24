@@ -242,17 +242,17 @@
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label for="inputEmail4"> Giá:</label>
-                    <input type="text" class="form-control" name="giasp" required="" value="298,000₫">
+                    <input type="text" class="form-control" name="giasp" required="" value="100,000₫">
                   </div>
                   <div class="form-group col-md-6">
                     <label for="inputPassword4">Size:</label>
-                    <input type="text" class="form-control" name="sizesp" required="" value="S, M">
+                    <input type="text" class="form-control" name="sizesp" required="" value="S, M, L">
                   </div>
                 </div>
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label for="inputCity">Màu sắc:</label>
-                    <input type="text" class="form-control" name="mausp" required="">
+                    <input type="text" class="form-control" name="mausp" required value="Trắng">
                   </div>
                   <div class="form-group col-md-3">
                     <label for="inputState">Danh mục:</label>

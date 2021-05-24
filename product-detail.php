@@ -1,3 +1,9 @@
+<?php
+  session_start();
+  // ini_set("display_errors","0");
+  // $loi="";
+  
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -31,7 +37,10 @@
     <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
 
   </head>
-  <body onload="checkCookie()">  
+  <body >
+  <?php 
+  include("connect.php");
+?>  
      <a class="scrollToTop" href="#"><i class="fa fa-chevron-up"></i></a>
   <!-- Start header section -->
   <header id="aa-header">
@@ -57,13 +66,41 @@
               <!-- / header top left -->
               <div class="aa-header-top-right">
                 <ul class="aa-head-top-nav-right">
-                  <li><a href="account.html" id="checkLogin1">Tài khoản</a></li>
                   <li class="hidden-xs"><a href="cart.html">Giỏ hàng</a></li>
                   <li class="hidden-xs"><a href="checkout.html">Thanh toán</a></li>
                   <li>
-                    <a href="" data-toggle="modal" data-target="#login-modal" id="checkLogin2">Đăng nhập</a>
-                    <a href="profile.html" hidden id="checkEmail1"></a>
-                    <a href="" hidden id="checkEmail2" onclick="delete_cookie()">Đăng xuất</a>
+                      <?php          
+                          if (isset($_SESSION['username']))
+                          { 
+                            $level = 2;
+                            $name="";
+                            $name= $_SESSION['username'];
+                            // $pass1=$_SESSION['password'];
+                            $sqltk = "SELECT * FROM users where email='$name'";
+                            if($resulttk = $conn->query($sqltk))
+                            {
+                              while($user_info = mysqli_fetch_array($resulttk))
+                              {
+                                  $level = $user_info['active'];
+                                  $name=$user_info['name'];
+                              }    
+                            }
+                                
+                            if($level == 1)
+                            {
+                              echo '<a href="dash/index.php">Xin chào: '.$name.'</a> <a href="logout.php">Đăng xuất</a>';
+                            }
+                            else
+                            {
+                              echo '<a href="profile.php">Xin chào: '.$name.'</a><a href="logout.php">Đăng xuất</a>';
+                            }
+                          }
+                          else
+                          {
+                            echo '<a href="account.php">Đăng nhập</a>';
+                          }
+                      ?>
+                    <!-- <a href="" data-toggle="modal" data-target="#login-modal" id="checkLogin2">Đăng nhập</a> -->
                   </li>
                 </ul>
               </div>
@@ -194,75 +231,92 @@
         <div class="col-md-12">
           <div class="aa-product-details-area">
             <div class="aa-product-details-content">
-              <div class="row">
-                <!-- Modal view slider -->
-                <div class="col-md-5 col-sm-5 col-xs-12">                              
-                  <div class="aa-product-view-slider">                                
-                    <div id="demo-1" class="simpleLens-gallery-container">
-                      <div class="simpleLens-container">
-                        <div class="simpleLens-big-image-container"><a data-lens-image="img/premium/sp2.jpg" class="simpleLens-lens-image"><img src="img/premium/sp2.jpg" class="simpleLens-big-image"></a></div>
+              <?php
+                  if(!isset($_GET['id'])){
+                    header('location:index.php');
+                  }
+                  $id = $_GET['id'];
+                  $sanpham ="SELECT * FROM products where id=".$id;
+                  $sanpham_res = mysqli_query($conn,$sanpham) or die("Cannot select table!");
+                  while ($sanpham_items = mysqli_fetch_array($sanpham_res))
+                  {
+                ?>
+                  <div class="row">
+                    <!-- Modal view slider -->
+                    <div class="col-md-5 col-sm-5 col-xs-12">                              
+                      <div class="aa-product-view-slider">                                
+                        <div id="demo-1" class="simpleLens-gallery-container">
+                          <div class="simpleLens-container">
+                            <div class="simpleLens-big-image-container"><a data-lens-image="<?php echo $sanpham_items['images']; ?>" class="simpleLens-lens-image"><img src="<?php echo $sanpham_items['images']; ?>" class="simpleLens-big-image"></a></div>
+                          </div>
+                          <div class="simpleLens-thumbnails-container">
+                              <a data-big-image="<?php echo $sanpham_items['images']; ?>" data-lens-image="<?php echo $sanpham_items['images']; ?>" class="simpleLens-thumbnail-wrapper" href="#">
+                                <img src="<?php echo $sanpham_items['images']; ?>" style="width: 45px;height: 55px;">
+                              </a>  
+
+                              <a data-big-image="<?php echo $sanpham_items['images']; ?>" data-lens-image="<?php echo $sanpham_items['images']; ?>" class="simpleLens-thumbnail-wrapper" href="#">
+                                <img src="<?php echo $sanpham_items['images']; ?>" style="width: 45px;height: 55px;">
+                              </a>
+
+                              <a data-big-image="<?php echo $sanpham_items['images']; ?>" data-lens-image="<?php echo $sanpham_items['images']; ?>" class="simpleLens-thumbnail-wrapper" href="#">
+                                <img src="<?php echo $sanpham_items['images']; ?>" style="width: 45px;height: 55px;">
+                              </a>
+                          </div>
+                        </div>
                       </div>
-                      <div class="simpleLens-thumbnails-container">
-                          <a data-big-image="img/premium/sp22.jpg" data-lens-image="img/premium/sp22.jpg" class="simpleLens-thumbnail-wrapper" href="#">
-                            <img src="img/premium/sp22.jpg" style="width: 45px;height: 55px;">
-                          </a>  
+                    </div>
+                    <!-- Modal view content -->
+                    <div class="col-md-7 col-sm-7 col-xs-12">
+                      <div class="aa-product-view-content">
+                        <h3><?php echo $sanpham_items['name']; ?></h3>
+                        <div class="aa-price-block">
+                          <span class="aa-product-view-price"><?php echo number_format($sanpham_items['price']);?>₫</span>
+                          <p class="aa-product-avilability">Tình trạng: 
+                            <?php 
+                              if($sanpham_items['status'] >0 ){
+                                  echo "<span style='color: green'>Còn hàng</span>";
+                              }else{
+                                echo "<span style='color: red'>Hết hàng</span>";
+                              }
+                            ?></p>
+                        </div>
+                        <!-- <p>Chất liệu: Acetic Acid<br/>
+                          Màu sắc: Trắng và Xám
+                        </p> -->
+                        <h4>Size</h4><?php echo $sanpham_items['size']; ?>
+                        <div class="aa-prod-view-size">
 
-                          <a data-big-image="img/premium/sp23.jpg" data-lens-image="img/premium/sp23.jpg" class="simpleLens-thumbnail-wrapper" href="#">
-                            <img src="img/premium/sp23.jpg" style="width: 45px;height: 55px;">
-                          </a>
-
-                          <a data-big-image="img/premium/sp24.jpg" data-lens-image="img/premium/sp24.jpg" class="simpleLens-thumbnail-wrapper" href="#">
-                            <img src="img/premium/sp24.jpg" style="width: 45px;height: 55px;">
-                          </a>
+                          <!-- <a href="#">S</a> -->
+                          <a href="#">M</a>
+                          <a href="#">L</a>
+                        </div>
+                        <h4>Màu sắc: <?php echo $sanpham_items['colors']; ?></h4>
+                        <div class="aa-color-tag">
+                          <!--  <a href="#" class="aa-color-yellow"></a>   -->                
+                          <!-- <a href="#" class="aa-color-pink"></a> -->
+                          <a href="#" class="aa-color-white"></a>                      
+                        </div>
+                        <div class="aa-prod-quantity">
+                          <form action="">
+                            <select id="" name="">
+                              <option selected="1" value="0">1</option>
+                              <option value="1">2</option>
+                              <option value="2">3</option>
+                              <option value="3">4</option>
+                              <option value="4">5</option>
+                            </select>
+                          </form>
+                          <p class="aa-prod-category">
+                            Danh mục: <a href="#"><?php echo $sanpham_items['category']; ?></a>
+                          </p>
+                        </div>
+                        <div class="aa-prod-view-bottom">
+                          <a class="aa-add-to-cart-btn" href="#">Thêm vào giỏ hàng</a>
+                          <a class="aa-add-to-cart-btn" href="#">So sánh</a>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <!-- Modal view content -->
-                <div class="col-md-7 col-sm-7 col-xs-12">
-                  <div class="aa-product-view-content">
-                    <h3>HALTER DRESS</h3>
-                    <div class="aa-price-block">
-                      <span class="aa-product-view-price">895,000₫</span>
-                      <p class="aa-product-avilability">Tình trạng: <span style="color: green">Còn hàng</span></p>
-                    </div>
-                    <!-- <p>Chất liệu: Acetic Acid<br/>
-                      Màu sắc: Trắng và Xám
-                    </p> -->
-                    <h4>Size</h4>
-                    <div class="aa-prod-view-size">
-                      <!-- <a href="#">S</a> -->
-                      <a href="#">M</a>
-                      <a href="#">L</a>
-                    </div>
-                    <h4>Màu sắc</h4>
-                    <div class="aa-color-tag">
-                      <!--  <a href="#" class="aa-color-yellow"></a>   -->                
-                      <!-- <a href="#" class="aa-color-pink"></a> -->
-                      <a href="#" class="aa-color-white"></a>                      
-                    </div>
-                    <div class="aa-prod-quantity">
-                      <form action="">
-                        <select id="" name="">
-                          <option selected="1" value="0">1</option>
-                          <option value="1">2</option>
-                          <option value="2">3</option>
-                          <option value="3">4</option>
-                          <option value="4">5</option>
-                        </select>
-                      </form>
-                      <p class="aa-prod-category">
-                        Danh mục: <a href="#">Áo</a>
-                      </p>
-                    </div>
-                    <div class="aa-prod-view-bottom">
-                      <a class="aa-add-to-cart-btn" href="#">Thêm vào giỏ hàng</a>
-                      <a class="aa-add-to-cart-btn" href="#">Yêu thích</a>
-                      <a class="aa-add-to-cart-btn" href="#">So sánh</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
             <div class="aa-product-details-bottom">
               <ul class="nav nav-tabs" id="myTab2">
@@ -275,14 +329,12 @@
                 <div class="tab-pane fade in active" id="description">
                   <p style="font-weight: bold;">Chất Liệu & Chi Tiết</p>
                   <ul>
-                    <li>Chất liệu:  Acetic Acid</li>
-                  </ul>
-                  <p style="font-weight: bold;">Miêu Tả</p>
-                  <ul>
-                    <li>Chất liệu: Xốp Cát Dập Li </li>
-                    <li>Lưu ý giặt ủi: Không ủi ở nhiệt độ cao, khuyến cáo dùng bàn ủi hơi, giặt tay nhẹ nhàng</li>
+                    <li><?php echo $sanpham_items['description']; ?></li>
                   </ul>
                 </div>
+              <?php                  
+             }
+            ?>
                 <div class="tab-pane fade " id="review">
                  <div class="aa-product-review-area">
                    <h4>Đánh giá về sản phẩm(2)</h4> 
@@ -362,153 +414,28 @@
             <div class="aa-product-related-item">
               <h3>Gợi ý cho bạn</h3>
               <ul class="aa-product-catg aa-related-item-slider">
-                <!-- start single product item -->
-                <!-- hang 1 san pham-->
-                <!-- start single product item -->
-                <li>
-                  <figure>
-                    <a class="aa-product-img" href="product-detail.html"><img style="height: 300px;width: 250px" src="img/index/ao1.jpg" alt="polo shirt img"></a>
-                    <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Thêm vào giỏ hàng</a>
-                      <figcaption>
-                      <h4 class="aa-product-title"><a href="product-detail.html">Áo nữ cắt màu trơn</a></h4>
-                      <span class="aa-product-price">221.000₫</span>
-                    </figcaption>
-                  </figure>                        
-                  <div class="aa-product-hvr-content">
-                    <a href="#" data-toggle="tooltip" data-placement="top" title="Yêu thích"><span class="fa fa-heart-o"></span></a>
-                    <a href="#" data-toggle="tooltip" data-placement="top" title="So sánh"><span class="fa fa-exchange"></span></a>                        
-                  </div>
-                  <!-- product badge -->
-                  <span class="aa-badge aa-hot" href="#">HOT!</span>
-                </li>
-                <!-- start single product item -->
-                <li>
-                  <figure>
-                    <a class="aa-product-img" href="product-detail.html"><img style="height: 300px;width: 250px" src="img/women/vay1.jpg" alt="polo shirt img"></a>
-                    <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Thêm vào giỏ hàng</a>
-                      <figcaption>
-                      <h4 class="aa-product-title"><a href="product-detail.html">Serri Đầm Cắt ra màu trơn Thanh lịch</a></h4>
-                      <span class="aa-product-price">600.000đ</span>
-                    </figcaption>
-                  </figure>                        
-                  <div class="aa-product-hvr-content">
-                    <a href="#" data-toggle="tooltip" data-placement="top" title="Yêu thích"><span class="fa fa-heart-o"></span></a>
-                    <a href="#" data-toggle="tooltip" data-placement="top" title="So sánh"><span class="fa fa-exchange"></span></a>
-                 </div>
-                  <!-- product badge -->
-                  <span class="aa-badge aa-sale" href="#">SALE!</span>
-                </li>
-
-                 <!-- start single product item -->
-                <li>
-                  <figure>
-                    <a class="aa-product-img" href="product-detail.html"><img style="height: 300px;width: 250px" src="img/index/ao2.jpg" alt="polo shirt img"></a>
-                    <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Thêm vào giỏ hàng</a>
-                      <figcaption>
-                      <h4 class="aa-product-title"><a href="product-detail.html">Đầm Viên lá sen răng cưa Thanh lịch</a></h4>
-                      <span class="aa-product-price">270.000₫</span>
-                    </figcaption>
-                  </figure>                        
-                  <div class="aa-product-hvr-content">
-                    <a href="#" data-toggle="tooltip" data-placement="top" title="Yêu thích"><span class="fa fa-heart-o"></span></a>
-                    <a href="#" data-toggle="tooltip" data-placement="top" title="So sánh"><span class="fa fa-exchange"></span></a>                        
-                  </div>
-                  <!-- product badge -->
-                  <span class="aa-badge aa-sale" href="#">SALE!</span>
-                </li>
-
-                <!-- start single product item -->
-                <li>
-                  <figure>
-                    <a class="aa-product-img" href="product-detail.html"><img style="height: 300px;width: 250px" src="img/index/ao3.jpg" alt="polo shirt img"></a>
-                    <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Thêm vào giỏ hàng</a>
-                      <figcaption>
-                      <h4 class="aa-product-title"><a href="product-detail.html">Đầm Thắt nút Hoa Boho</a></h4>
-                      <span class="aa-product-price">374.900₫</span>
-                    </figcaption>
-                  </figure>                        
-                  <div class="aa-product-hvr-content">
-                    <a href="#" data-toggle="tooltip" data-placement="top" title="Yêu thích"><span class="fa fa-heart-o"></span></a>
-                    <a href="#" data-toggle="tooltip" data-placement="top" title="So sánh"><span class="fa fa-exchange"></span></a> </div>
-                  <!-- product badge -->
-                  <span class="aa-badge aa-sale" href="#">SALE!</span>
-                </li>
-
-               <!-- het hang 1 -->
-
-               <!-- hang 2 san pham trang phuc-->
-                <!-- start single product item -->
-                <li>
-                  <figure>
-                    <a class="aa-product-img" href="product-detail.html"><img style="height: 300px;width: 250px" src="img/index/ao5.jpg" alt="polo shirt img"></a>
-                    <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Thêm vào giỏ hàng</a>
-                      <figcaption>
-                      <h4 class="aa-product-title"><a href="product-detail.html">Áo sơ mi Nút phía trước màu trơn</a></h4>
-                      <span class="aa-product-price">289.000₫</span>
-                    </figcaption>
-                  </figure>                        
-                  <div class="aa-product-hvr-content">
-                    <a href="#" data-toggle="tooltip" data-placement="top" title="Yêu thích"><span class="fa fa-heart-o"></span></a>
-                    <a href="#" data-toggle="tooltip" data-placement="top" title="So sánh"><span class="fa fa-exchange"></span></a>
-                 </div>
-                  <!-- product badge -->
-                  <span class="aa-badge aa-hot" href="#">HOT!</span>
-                </li>
-
-                <!-- start single product item -->
-                <li>
-                  <figure>
-                    <a class="aa-product-img" href="product-detail.html"><img style="height: 300px;width: 250px" src="img/index/ao6.jpg" alt="polo shirt img"></a>
-                    <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Thêm vào giỏ hàng</a>
-                      <figcaption>
-                      <h4 class="aa-product-title"><a href="product-detail.html">Bộ thời trang Trọn gói Hoa Boho</a></h4>
-                      <span class="aa-product-price">219.000₫</span>
-                    </figcaption>
-                  </figure>                        
-                  <div class="aa-product-hvr-content">
-                    <a href="#" data-toggle="tooltip" data-placement="top" title="Yêu thích"><span class="fa fa-heart-o"></span></a>
-                    <a href="#" data-toggle="tooltip" data-placement="top" title="So sánh"><span class="fa fa-exchange"></span></a>                        
-                  </div>
-                  <!-- product badge -->
-                  <span class="aa-badge aa-sold-out" href="#">Sold Out!</span>
-                </li>
-
-                <!-- start single product item -->
-                <li>
-                  <figure>
-                    <a class="aa-product-img" href="product-detail.html"><img style="height: 300px;width: 250px" src="img/index/ao8.jpg" alt="polo shirt img"></a>
-                    <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Thêm vào giỏ hàng</a>
-                      <figcaption>
-                      <h4 class="aa-product-title"><a href="product-detail.html">Áo sơ mi Nút Sọc ca rô</a></h4>
-                      <span class="aa-product-price">216.000₫</span>
-                    </figcaption>
-                  </figure>                        
-                  <div class="aa-product-hvr-content">
-                    <a href="#" data-toggle="tooltip" data-placement="top" title="Yêu thích"><span class="fa fa-heart-o"></span></a>
-                    <a href="#" data-toggle="tooltip" data-placement="top" title="So sánh"><span class="fa fa-exchange"></span></a> </div>
-                  <!-- product badge -->
-                  <span class="aa-badge aa-hot" href="#">HOT!</span>
-                </li>
-                <!-- start single product item -->
-                <li>
-                  <figure>
-                    <a class="aa-product-img" href="product-detail.html"><img style="height: 300px;width: 250px" src="img/index/ao7.jpg" alt="polo shirt img"></a>
-                    <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Thêm vào giỏ hàng</a>
-                      <figcaption>
-                      <h4 class="aa-product-title"><a href="product-detail.html">Áo thun Nút màu trơn</a></h4>
-                      <span class="aa-product-price">160.700₫</span>
-                    </figcaption>
-                  </figure>                        
-                  <div class="aa-product-hvr-content">
-                    <a href="#" data-toggle="tooltip" data-placement="top" title="Yêu thích"><span class="fa fa-heart-o"></span></a>
-                    <a href="#" data-toggle="tooltip" data-placement="top" title="So sánh"><span class="fa fa-exchange"></span></a>                        
-                  </div>
-                  <!-- product badge -->
-                  <span class="aa-badge aa-sale" href="#">SALE!</span>
-                </li>
-
-               <!-- het hang 2 sp -->                                                                                 
-              </ul>  
+                <?php
+                  $new_query="SELECT * FROM products order by id desc limit 8";
+                  $new_res = mysqli_query($conn,$new_query) or die('Cannot select table!');
+                  while ($new_items = mysqli_fetch_array($new_res))
+                  { ?>
+                      <li>
+                        <figure>
+                          <a class="aa-product-img" href="product-detail.php?id=<?php echo $new_items['id']; ?>"><img style="height: 300px;width: 250px" src="<?php echo $new_items['images']; ?>" alt="polo shirt img"></a>
+                          <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Thêm vào giỏ hàng</a>
+                            <figcaption>
+                            <h4 class="aa-product-title"><a href="product-detail.php?id=<?php echo $new_items['id']; ?>"><?php echo $new_items['name']; ?></a></h4>
+                            <span class="aa-product-price"><?php echo number_format($new_items['price']); ?>₫</span>
+                          </figcaption>
+                        </figure>                        
+                        <div class="aa-product-hvr-content">
+                          <a href="#" data-toggle="tooltip" data-placement="top" title="Yêu thích"><span class="fa fa-heart-o"></span></a>
+                          <a href="#" data-toggle="tooltip" data-placement="top" title="So sánh"><span class="fa fa-exchange"></span></a>                        
+                        </div>
+                        <!-- product badge -->
+                       <span class="aa-badge aa-hot" href="#">HOT!</span>                   
+                      </li>
+                <?php } ?>
             </div>  
           </div>
         </div>
