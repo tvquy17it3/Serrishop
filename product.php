@@ -3,7 +3,6 @@
   // ini_set("display_errors","0");
   // $loi="";
   $ReturnURL = base64_encode($_SERVER['REQUEST_URI']);
-  
 ?>
 <?php
 
@@ -20,7 +19,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">    
-    <title>Serri Shop | Product Detail</title>
+    <title>Serri Shop | Product</title>
     
     <!-- Font awesome -->
     <link href="css/font-awesome.css" rel="stylesheet">
@@ -47,11 +46,12 @@
     <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
 
   </head>
-  <body >
+  <!-- Only for product page body tag have to added .productPage class -->
+  <body class="productPage"> 
   <?php 
   include("connect.php");
-?>  
-     <a class="scrollToTop" href="#"><i class="fa fa-chevron-up"></i></a>
+?> 
+  <a class="scrollToTop" href="#"><i class="fa fa-chevron-up"></i></a>
   <!-- Start header section -->
   <header id="aa-header">
     <!-- start header top  -->
@@ -76,6 +76,7 @@
               <!-- / header top left -->
               <div class="aa-header-top-right">
                 <ul class="aa-head-top-nav-right">
+                  <!-- <li><a href="account.html" id="checkLogin1">Tài khoản</a></li> -->
                   <li class="hidden-xs"><a href="cart.html">Giỏ hàng</a></li>
                   <li class="hidden-xs"><a href="checkout.html">Thanh toán</a></li>
                   <li>
@@ -222,7 +223,7 @@
           <div class="navbar-collapse collapse">
             <!-- Left nav -->
             <ul class="nav navbar-nav">
-              <!-- <li><a href="index.html">Trang chủ</a></li> -->
+              <!-- <li><a href="index.php">Trang chủ</a></li> -->
               <li><a href="product.html">HÀNG MỚI</a></li>
               <li><a href="product.html">SẢN PHẨM<span class="caret"></span></a>
                 <ul class="dropdown-menu">  
@@ -253,241 +254,233 @@
     </div>
   </section>
   <!-- / menu -->  
-
+ 
+  <!-- catg header banner section -->
+  <section id="aa-catg-head-banner">
+   <img src="img/index/bannerproduct.png" alt="fashion img" width="100%">
+   <div class="aa-catg-head-banner-area">
+     <div class="container">
+      <div class="aa-catg-head-banner-content">
+        <h2>Fashion</h2>
+        <ol class="breadcrumb">
+          <li><a href="index.php" class="active">Serri Shop</a></li>         
+          <!-- <li class="active">Shop</li> -->
+        </ol>
+      </div>
+     </div>
+   </div>
+  </section>
+  <!-- / catg header banner section -->
 
   <!-- product category -->
-  <section id="aa-product-details">
+  <section id="aa-product-category">
     <div class="container">
       <div class="row">
-        <div class="col-md-12">
-          <div class="aa-product-details-area">
-            <div class="aa-product-details-content">
-              <?php
-                  if(!isset($_GET['id'])){
-                    header('location:index.php');
-                  }
-                  $id = $_GET['id'];
-                  $sanpham ="SELECT * FROM products where id=".$id;
-                  $sanpham_res = mysqli_query($conn,$sanpham) or die("Cannot select table!");
-                  while ($sanpham_items = mysqli_fetch_array($sanpham_res))
-                  {
-                ?>
-                  <div class="row">
-                    <!-- Modal view slider -->
-                    <div class="col-md-5 col-sm-5 col-xs-12">                              
-                      <div class="aa-product-view-slider">                                
-                        <div id="demo-1" class="simpleLens-gallery-container">
-                          <div class="simpleLens-container">
-                            <div class="simpleLens-big-image-container"><a data-lens-image="<?php echo $sanpham_items['images']; ?>" class="simpleLens-lens-image"><img src="<?php echo $sanpham_items['images']; ?>" class="simpleLens-big-image"></a></div>
-                          </div>
-                          <div class="simpleLens-thumbnails-container">
-                              <a data-big-image="<?php echo $sanpham_items['images']; ?>" data-lens-image="<?php echo $sanpham_items['images']; ?>" class="simpleLens-thumbnail-wrapper" href="#">
-                                <img src="<?php echo $sanpham_items['images']; ?>" style="width: 45px;height: 55px;">
-                              </a>  
-
-                              <a data-big-image="<?php echo $sanpham_items['images']; ?>" data-lens-image="<?php echo $sanpham_items['images']; ?>" class="simpleLens-thumbnail-wrapper" href="#">
-                                <img src="<?php echo $sanpham_items['images']; ?>" style="width: 45px;height: 55px;">
-                              </a>
-
-                              <a data-big-image="<?php echo $sanpham_items['images']; ?>" data-lens-image="<?php echo $sanpham_items['images']; ?>" class="simpleLens-thumbnail-wrapper" href="#">
-                                <img src="<?php echo $sanpham_items['images']; ?>" style="width: 45px;height: 55px;">
-                              </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- Modal view content -->
-                    <div class="col-md-7 col-sm-7 col-xs-12">
-                      <div class="aa-product-view-content">
-                        <h3><?php echo $sanpham_items['name']; ?></h3>
-                        <div class="aa-price-block">
-                          <span class="aa-product-view-price"><?php echo number_format($sanpham_items['price']);?>₫</span>
-                          <p class="aa-product-avilability">Tình trạng: 
-                            <?php 
-                              $countsp = $sanpham_items['status'];
-                              if($countsp >0 ){
-                                  echo "<span style='color: green'>Còn hàng</span>";
-                              }else{
-                                echo "<span style='color: red'>Hết hàng</span>";
-                              }
-                            ?></p>
-                        </div>
-                        <!-- <p>Chất liệu: Acetic Acid<br/>
-                          Màu sắc: Trắng và Xám
-                        </p> -->
-                        <h4>Size </h4>
-                        <div class="aa-prod-view-size">
-                          <?php 
-                              $strsize = $sanpham_items['size'];
-                              $varSize = explode(',', $strsize);
-                              foreach ($varSize as $value) {
-                                echo "<a>$value</a>";
-                              }
-                          ?>
-                          <!-- <a href="#">S</a> -->
-                         <!--  <a href="#">M</a>
-                          <a href="#">L</a> -->
-                        </div>
-                        <h4>Màu sắc: <?php echo $sanpham_items['colors']; ?></h4>
-                        <div class="aa-color-tag">
-                          <!--  <a href="#" class="aa-color-yellow"></a>   -->                
-                          <!-- <a href="#" class="aa-color-pink"></a> -->
-                          <a href="#" class="aa-color-white"></a>                      
-                        </div>
-                        <div class="aa-prod-quantity">
-                          <form action="">
-                            <select id="" name="">
-                              <?php 
-                                if ($countsp > 0) {
-                                  for ($i=1; $i <= $countsp; $i++) { 
-                                    if ($i<=8) {
-                                      echo "<option value='$i'>$i</option>";
-                                    }else{
-                                      break;
-                                    }
-                                  }
-                                }
-                              ?>
-<!--                               <option selected="1" value="0">1</option>
-                              <option value="1">2</option>
-                              <option value="2">3</option>
-                              <option value="3">4</option>
-                              <option value="4">5</option> -->
-                            </select>
-                          </form>
-                          <p class="aa-prod-category">
-                            Danh mục: <a href="#"><?php echo $sanpham_items['category']; ?></a>
-                          </p>
-                        </div>
-                        <div class="aa-prod-view-bottom">
-                          <a class="aa-add-to-cart-btn" href="add-cart.php?id=<?php echo $sanpham_items['id']; ?>&return_url=<?php echo $ReturnURL; ?>">Thêm vào giỏ hàng</a>
-                          <a class="aa-add-to-cart-btn" href="#">So sánh</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-            </div>
-            <div class="aa-product-details-bottom">
-              <ul class="nav nav-tabs" id="myTab2">
-                <li><a href="#description" data-toggle="tab">Mô tả</a></li>
-                <li><a href="#review" data-toggle="tab">Đánh giá</a></li>                
-              </ul>
-
-              <!-- Tab panes -->
-              <div class="tab-content">
-                <div class="tab-pane fade in active" id="description">
-                  <p style="font-weight: bold;">Chất Liệu & Chi Tiết</p>
-                  <ul>
-                    <li><?php echo $sanpham_items['description']; ?></li>
-                  </ul>
-                </div>
-              <?php                  
-             }
-            ?>
-                <div class="tab-pane fade " id="review">
-                 <div class="aa-product-review-area">
-                   <h4>Đánh giá về sản phẩm(2)</h4> 
-                   <ul class="aa-review-nav">
-                     <li>
-                        <div class="media">
-                          <div class="media-left">
-                            <a href="#">
-                              <img class="media-object" src="img/index/dieumy.jpg" alt="girl image">
-                            </a>
-                          </div>
-                          <div class="media-body">
-                            <h4 class="media-heading"><strong>My</strong> - <span>20/01/2021</span></h4>
-                            <div class="aa-product-rating">
-                              <span class="fa fa-star"></span>
-                              <span class="fa fa-star"></span>
-                              <span class="fa fa-star"></span>
-                              <span class="fa fa-star"></span>
-                              <span class="fa fa-star"></span>
-                            </div>
-                            <p>Chất liệu tốt, hỗ trợ nhiệt tình, giao hàng nhanh.</p>
-                          </div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="media">
-                          <div class="media-left">
-                            <a href="#">
-                              <img class="media-object" src="img/index/thuthang.jpg" alt="girl image">
-                            </a>
-                          </div>
-                          <div class="media-body">
-                            <h4 class="media-heading"><strong>Thu Thắng</strong> - <span>12/02/2021</span></h4>
-                            <div class="aa-product-rating">
-                              <span class="fa fa-star"></span>
-                              <span class="fa fa-star"></span>
-                              <span class="fa fa-star"></span>
-                              <span class="fa fa-star"></span>
-                              <span class="fa fa-star-o"></span>
-                            </div>
-                            <p>Ổn trong tầm giá.</p>
-                          </div>
-                        </div>
-                      </li>
-                   </ul>
-                   <h4>Đánh giá ngay</h4>
-                   <div class="aa-your-rating">
-                     <p>Chọn</p>
-                     <a href="#"><span class="fa fa-star-o"></span></a>
-                     <a href="#"><span class="fa fa-star-o"></span></a>
-                     <a href="#"><span class="fa fa-star-o"></span></a>
-                     <a href="#"><span class="fa fa-star-o"></span></a>
-                     <a href="#"><span class="fa fa-star-o"></span></a>
-                   </div>
-                   <!-- review form -->
-                   <form action="" class="aa-review-form">
-                      <div class="form-group">
-                        <label for="message">Hãy chia sẻ cảm nhận của bạn về sản phẩm</label>
-                        <textarea class="form-control" rows="3" id="message"></textarea>
-                      </div>
-<!--                       <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name" placeholder="Name">
-                      </div>  
-                      <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email" placeholder="example@gmail.com">
-                      </div> -->
-
-                      <button type="submit" class="btn btn-default aa-review-submit">Đánh giá</button>
-                   </form>
-                 </div>
-                </div>            
+        <div class="col-lg-9 col-md-9 col-sm-8 col-md-push-3">
+          <div class="aa-product-catg-content">
+            <div class="aa-product-catg-head" style="width: 90%">
+              <div class="aa-product-catg-head-left">
+                <form action="" class="aa-sort-form">
+                  <label for="">Sắp xếp theo</label>
+                  <select name="">
+                    <option value="1" selected="Default">Mặc định</option>
+                    <option value="2">Giá Giảm dần</option>
+                    <option value="3">Giá Tăng dần</option>
+                    <option value="4">Mua nhiều</option>
+                    <option value="4">Đang khuyến mãi</option>
+                  </select>
+                </form>
+                <form action="" class="aa-show-form">
+                  <label for="">Hiển thị</label>
+                  <select name="">
+                    <option value="1" selected="12">12</option>
+                    <option value="2">24</option>
+                    <option value="3">36</option>
+                  </select>
+                </form>
+              </div>
+              <div class="aa-product-catg-head-right" >
+                <a id="grid-catg" href="#"><span class="fa fa-th"></span></a>
+                <a id="list-catg" href="#"><span class="fa fa-list"></span></a>
               </div>
             </div>
-            <!-- Related product -->
-            <div class="aa-product-related-item">
-              <h3>Gợi ý cho bạn</h3>
-              <ul class="aa-product-catg aa-related-item-slider">
-                <?php
-                  $new_query="SELECT * FROM products order by id desc limit 8";
-                  $new_res = mysqli_query($conn,$new_query) or die('Cannot select table!');
-                  while ($new_items = mysqli_fetch_array($new_res))
-                  { ?>
-                      <li>
-                        <figure>
-                          <a class="aa-product-img" href="product-detail.php?id=<?php echo $new_items['id']; ?>"><img style="height: 300px;width: 250px" src="<?php echo $new_items['images']; ?>" alt="polo shirt img"></a>
-                          <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Thêm vào giỏ hàng</a>
-                            <figcaption>
-                            <h4 class="aa-product-title"><a href="product-detail.php?id=<?php echo $new_items['id']; ?>"><?php echo $new_items['name']; ?></a></h4>
-                            <span class="aa-product-price"><?php echo number_format($new_items['price']); ?>₫</span>
-                          </figcaption>
-                        </figure>                        
-                        <div class="aa-product-hvr-content">
-                          <a href="#" data-toggle="tooltip" data-placement="top" title="Yêu thích"><span class="fa fa-heart-o"></span></a>
-                          <a href="#" data-toggle="tooltip" data-placement="top" title="So sánh"><span class="fa fa-exchange"></span></a>                        
-                        </div>
-                        <!-- product badge -->
-                       <span class="aa-badge aa-hot" href="#">HOT!</span>                   
-                      </li>
-                <?php } ?>
-            </div>  
+            <div class="aa-product-catg-body">
+              <ul class="aa-product-catg" >
+                <!-- start single product item -->
+                        <!-- hang 1 san pham-->
+                        <!-- start single product item -->
+                        <!-- <li>
+                          <figure>
+                            <a class="aa-product-img" href="product-detail1.html"><img style="height: 300px;width: 250px" src="img/premium/sp3.jpg" alt="polo shirt img"></a>
+                            <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Thêm vào giỏ hàng</a>
+                              <figcaption>
+                              <h4 class="aa-product-title"><a href="product-detail1.html">Áo thun tay dài form ngắn</a></h4>
+                              <span class="aa-product-price">295,000₫</span>
+                              <p class="aa-product-descrip">
+                                Màu sắc: Trắng và Xám<br/>
+                                Chất liệu: Thun 2 chiều<br/>
+                                Đặc tính: Co giãn tốt, ít nhăn<br/>
+                              </p>
+                            </figcaption>
+                          </figure>                        
+                          <div class="aa-product-hvr-content">
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="Yêu thích"><span class="fa fa-heart-o"></span></a>
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="So sánh"><span class="fa fa-exchange"></span></a>                        
+                          </div>
+                          <span class="aa-badge aa-sale" href="#">SALE!</span>
+                        </li> -->
+
+                      <?php
+                        if(isset($_GET['sort'])){
+                          $sorts= $_GET['sort'];
+                          $new_query="SELECT * FROM products where category=N'$sorts' order by id desc limit 12";
+                        }elseif (isset($_GET['fill'])) {
+                          $ratings= $_GET['fill'];
+                          $new_query="SELECT * FROM products where ratings = '$ratings' order by id limit 12";
+                        }else{
+                          $new_query="SELECT * FROM products order by id desc limit 12";
+                        }
+                        $new_res = mysqli_query($conn,$new_query) or die('Cannot select table!');
+                        while ($new_items = mysqli_fetch_array($new_res))
+                         { ?>
+                            <li>
+                              <figure>
+                                <a class="aa-product-img" href="product-detail.php?id=<?php echo $new_items['id']; ?>"><img style="height: 300px;width: 250px" src="<?php echo $new_items['images']; ?>" alt="polo shirt img"></a>
+                                <a class="aa-add-card-btn" href="add-cart.php?id=<?php echo $new_items['id']; ?>&return_url=<?php echo $ReturnURL; ?>"><span class="fa fa-shopping-cart"></span>Thêm vào giỏ hàng</a>
+                                  <figcaption>
+                                  <h4 class="aa-product-title"><a href="product-detail.php?id=<?php echo $new_items['id']; ?>"><?php echo $new_items['name']; ?></a></h4>
+                                  <span class="aa-product-price"><?php echo number_format($new_items['price']); ?>₫</span>
+                                  <p class="aa-product-descrip">
+                                Màu sắc: Trắng và Xám<br/>
+                                Chất liệu: Thun 2 chiều<br/>
+                                Đặc tính: Co giãn tốt, ít nhăn<br/>
+                              </p>
+                                </figcaption>
+                              </figure>                        
+                              <div class="aa-product-hvr-content">
+                                <a href="#" data-toggle="tooltip" data-placement="top" title="Yêu thích"><span class="fa fa-heart-o"></span></a>
+                                <a href="#" data-toggle="tooltip" data-placement="top" title="So sánh"><span class="fa fa-exchange"></span></a>                        
+                              </div>
+                              <!-- product badge -->
+                             <span class="aa-badge aa-hot" href="#">HOT!</span>                   
+                            </li>
+                      <?php } ?>
+                                                     
+              </ul> 
+            </div>
+            <div class="aa-product-catg-pagination">
+              <nav>
+                <ul class="pagination">
+                  <li>
+                    <a href="#" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                  <li><a href="#" style="font-weight: bold;">1</a></li>
+                  <li><a href="#">2</a></li>
+                  <li><a href="#">3</a></li>
+                  <li><a href="#">4</a></li>
+                  <li><a href="#">5</a></li>
+                  <li>
+                    <a href="#" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
           </div>
         </div>
+        <div class="col-lg-3 col-md-3 col-sm-4 col-md-pull-9">
+          <aside class="aa-sidebar">
+            <!-- single sidebar -->
+            <div class="aa-sidebar-widget">
+              <h3>Danh mục</h3>
+              <ul class="aa-catg-nav">
+                <li><a href="product.php">Hàng mới</a></li>
+                <li><a href="product.php?fill=2">Bán chạy</a></li>
+                <li><a href="product.php?sort=Áo sơ mi">Áo sơ mi</a></li>
+                <li><a href="product.php?sort=Áo kiểu">Áo kiểu</a></li>
+                <li><a href="product.php?sort=Áo thun">Áo thun</a></li>
+                <li><a href="product.php?sort=Áo khoác">Áo khoác</a></li>
+                <li><a href="product.php?sort=Chân váy">Chân váy</a></li>
+                <li><a href="product.php?sort=Quần dài">Quần dài</a></li>
+                <li><a href="product.php?sort=Quần short">Quần short</a></li>
+                <li><a href="product.php?sort=Đầm">Đầm</a></li>
+                <li><a href="product.php?sort=Hàng dệt kim">Hàng dệt kim</a></li>
+              </ul>
+            </div>
+            <!-- single sidebar -->
+            <div class="aa-sidebar-widget">
+              <h3>Tags</h3>
+              <div class="tag-cloud">
+                <a href="#">Nhiều màu</a>
+                <a href="#">Màu đen</a>
+                <a href="#">Trắng</a>
+                <a href="#">Hoa</a>
+                <a href="#">Bông</a>
+                <a href="#">Ngắn tay</a>
+              </div>
+            </div>
+            <!-- single sidebar -->
+            <div class="aa-sidebar-widget">
+              <h3>Khoảng giá</h3>              
+              <!-- price range -->
+              <div class="aa-sidebar-price-range">
+               <form action="">
+                  <div id="skipstep" class="noUi-target noUi-ltr noUi-horizontal noUi-background">
+                  </div>
+                  <span id="skip-value-lower" class="example-val">50.000</span> 
+                  <span id="skip-value-upper" class="example-val">100.000</span>
+                  <button class="aa-filter-btn" type="submit" style="margin:15px; ">Lọc</button>
+               </form>
+              </div>              
+
+            </div>
+            <!-- single sidebar -->
+            <div class="aa-sidebar-widget">
+              <h3>Màu sắc</h3>
+              <div class="aa-color-tag">
+                <a class="aa-color-white" href="#"></a>
+                <a class="aa-color-green" href="#"></a>
+                <a class="aa-color-yellow" href="#"></a>
+                <a class="aa-color-pink" href="#"></a>
+                <a class="aa-color-purple" href="#"></a>
+                <a class="aa-color-blue" href="#"></a>
+                <a class="aa-color-orange" href="#"></a>
+                <a class="aa-color-gray" href="#"></a>
+                <a class="aa-color-black" href="#"></a>
+                <!-- <a class="aa-color-cyan" href="#"></a> -->
+                <!-- <a class="aa-color-olive" href="#"></a> -->
+                <a class="aa-color-orchid" href="#"></a>
+              </div>                            
+            </div>
+            <!-- single sidebar -->
+<!--             <div class="aa-sidebar-widget">
+              <h3>Đã xem gần đây</h3>
+              <div class="aa-recently-views">
+                <ul>
+                  <li>
+                    <a href="product-detail1.html" class="aa-cartbox-img" style="height: 112px;"><img alt="img" src="img/premium/sp3.jpg"></a>
+                    <div class="aa-cartbox-info">
+                      <h4><a href="product-detail1.html">Áo thun tay dài form ngắn</a></h4>
+                      <p>295,000₫</p>
+                    </div>                    
+                  </li>
+                  <li>
+                    <a href="product-detail2.html" class="aa-cartbox-img" style="height: 112px;"><img alt="img" src="img/premium/sp4.jpg"></a>
+                    <div class="aa-cartbox-info">
+                      <h4><a href="product-detail2.html">Quần ngắn lưng thun kẻ sọc</a></h4>
+                      <p>298.000₫</p>
+                    </div>                    
+                  </li>                                      
+                </ul>
+              </div>                            
+            </div> -->
+            <!-- single sidebar -->
+          </aside>
+        </div>
+       
       </div>
     </div>
   </section>
@@ -603,7 +596,6 @@
     </div>
   </footer>
   <!-- / footer -->
-
   <!-- Login Modal -->  
   <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -629,9 +621,8 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div>   
-
-
     
+
   <!-- jQuery library -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -653,6 +644,7 @@
   <!-- Custom js -->
   <script src="js/custom.js"></script> 
   <script src="js/login.js"></script> 
+  
 
   </body>
 </html>

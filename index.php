@@ -2,7 +2,16 @@
   session_start();
   // ini_set("display_errors","0");
   // $loi="";
-  
+  $ReturnURL = base64_encode($_SERVER['REQUEST_URI']);
+?>
+<?php
+
+ // so san pham da add vao cart
+  $prd = 0;
+  if(isset($_SESSION['cart']))
+  {
+    $prd = count($_SESSION['cart']);
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -122,24 +131,45 @@
                 <a class="aa-cart-link" href="cart.html">
                   <span class="fa fa-shopping-basket"></span>
                   <span class="aa-cart-title">Giỏ hàng</span>
-                  <span class="aa-cart-notify">1</span>
+                  <span class="aa-cart-notify"><?php echo $prd;?></span>
                 </a>
                 <div class="aa-cartbox-summary">
                   <ul>
-                    <li>
-                      <a class="aa-cartbox-img" href="product-detail1.html"><img src="img/premium/sp3.jpg" alt="img"></a>
-                      <div class="aa-cartbox-info">
-                        <h4><a href="product-detail1.html">Áo thun tay dài form ngắn</a></h4>
-                        <p>1 x 295,000₫</p>
-                      </div>
-                      <a class="aa-remove-product" href="#"><span class="fa fa-times"></span></a>
-                    </li>                  
+                    <?php
+                      $sum_all = 0;
+                      if(isset($_SESSION['cart']))
+                      {
+                        foreach($_SESSION['cart'] as $id =>$prd)
+                        {
+                            $arr_id[] = $id;
+                        }
+                        $str_id = implode(',',$arr_id);
+                        $item_query = "SELECT * FROM  products WHERE id IN ($str_id) ORDER BY id ASC";
+                        $item_result = mysqli_query($conn,$item_query) or die ('Cannot select table!');
+                        while ($rows = mysqli_fetch_array($item_result))
+                        {
+                          ?>
+                          <li>
+                            <a class="aa-cartbox-img" href="product-detail.php?id=<?php echo $rows['id']; ?>"><img src="<?php echo $rows['images']; ?>" alt="img"></a>
+                            <div class="aa-cartbox-info">
+                              <h4><a href="product-detail.php?id=<?php echo $rows['id']; ?>"><?php echo $rows['name']; ?></a></h4>
+                              <p><?php echo $_SESSION['cart'][$rows['id']]." x ".number_format($rows['price']); ?></p>
+                                <?php 
+                                    $sum_all += $rows['price']*$_SESSION['cart'][$rows['id']]; 
+                                ?>
+                            </div>
+                            <a class="aa-remove-product" href="delcart.php?id=<?php echo $rows['id'];?>&return_url=<?php echo $ReturnURL; ?>"><span class="fa fa-times"></span></a>
+                          </li>  
+                    <?php     
+                           }
+                      }
+                 ?>
                     <li>
                       <span class="aa-cartbox-total-title">
                         Tổng
                       </span>
                       <span class="aa-cartbox-total-price">
-                        295,000₫
+                         <?php echo number_format($sum_all); ?>₫
                       </span>
                     </li>
                   </ul>
@@ -181,24 +211,24 @@
             <!-- Left nav -->
             <ul class="nav navbar-nav">
               <!-- <li><a href="index.php">Trang chủ</a></li> -->
-              <li><a href="product.html">HÀNG MỚI</a></li>
-              <li><a href="product.html">SẢN PHẨM<span class="caret"></span></a>
+              <li><a href="product.php">HÀNG MỚI</a></li>
+              <li><a href="product.php">SẢN PHẨM<span class="caret"></span></a>
                 <ul class="dropdown-menu">  
-                  <li><a href="product.html">HÀNG MỚI</a></li>
-                  <li><a href="product.html">BÁN CHẠY</a></li>
-                   <li><a href="product.html">SẢN PHẨM<span class="caret"></span></a>
+                  <li><a href="product.php">HÀNG MỚI</a></li>
+                  <li><a href="product.php?fill=2">BÁN CHẠY</a></li>
+                   <li><a href="product.php">SẢN PHẨM<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                      <li><a href="product.html">TẤT CẢ SẢN PHẨM</a></li>
-                      <li><a href="product.html">ÁO SƠ MI</a></li>
-                      <li><a href="product.html">ÁO KIỂU</a></li>
-                      <li><a href="product.html">ÁO THUN</a></li>
-                      <li><a href="product.html">ÁO KHOÁC</a></li>
-                      <li><a href="product.html">CHÂN VÁY</a></li>
-                      <li><a href="product.html">QUẦN DÀI</a></li>
-                      <li><a href="product.html">QUẦN SHORT</a></li>
-                      <li><a href="product.html">ĐẦM</a></li>
-                      <li><a href="product.html">HÀNG DỆT KIM</a></li>
-                      <li><a href="product.html">JEANS | DENIM</a></li>
+                      <li><a href="product.php">TẤT CẢ SẢN PHẨM</a></li>
+                      <li><a href="product.php?sort=Áo sơ mi">ÁO SƠ MI</a></li>
+                      <li><a href="product.php?sort=Áo kiểu">ÁO KIỂU</a></li>
+                      <li><a href="product.php?sort=Áo thun">ÁO THUN</a></li>
+                      <li><a href="product.php?sort=Áo khoác">ÁO KHOÁC</a></li>
+                      <li><a href="product.php?sort=Chân váy">CHÂN VÁY</a></li>
+                      <li><a href="product.php?sort=Quần dài">QUẦN DÀI</a></li>
+                      <li><a href="product.php?sort=Quần short">QUẦN SHORT</a></li>
+                      <li><a href="product.php?sort=Đầm">ĐẦM</a></li>
+                      <li><a href="product.php?sort=Hàng dệt kim">HÀNG DỆT KIM</a></li>
+                      <!-- <li><a href="product.html">JEANS | DENIM</a></li> -->
                     </ul>
                   </li>
                 </ul>
@@ -341,7 +371,7 @@
                             <li>
                               <figure>
                                 <a class="aa-product-img" href="product-detail.php?id=<?php echo $new_items['id']; ?>"><img style="height: 300px;width: 250px" src="<?php echo $new_items['images']; ?>" alt="polo shirt img"></a>
-                                <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Thêm vào giỏ hàng</a>
+                                <a class="aa-add-card-btn" href="add-cart.php?id=<?php echo $new_items['id']; ?>&return_url=<?php echo $ReturnURL; ?>"><span class="fa fa-shopping-cart"></span>Thêm vào giỏ hàng</a>   
                                   <figcaption>
                                   <h4 class="aa-product-title"><a href="product-detail.php?id=<?php echo $new_items['id']; ?>"><?php echo $new_items['name']; ?></a></h4>
                                   <span class="aa-product-price"><?php echo number_format($new_items['price']); ?>₫</span>
@@ -371,7 +401,7 @@
                               <li>
                                 <figure>
                                   <a class="aa-product-img" href="product-detail.php?id=<?php echo $new_items['id']; ?>"><img style="height: 300px;width: 250px" src="<?php echo $new_items['images']; ?>" alt="polo shirt img"></a>
-                                  <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Thêm vào giỏ hàng</a>
+                                  <a class="aa-add-card-btn" href="add-cart.php?id=<?php echo $new_items['id']; ?>&return_url=<?php echo $ReturnURL; ?>"><span class="fa fa-shopping-cart"></span>Thêm vào giỏ hàng</a> 
                                     <figcaption>
                                     <h4 class="aa-product-title"><a href="product-detail.php?id=<?php echo $new_items['id']; ?>"><?php echo $new_items['name']; ?></a></h4>
                                     <span class="aa-product-price"><?php echo number_format($new_items['price']); ?>₫</span>
@@ -386,7 +416,7 @@
                               </li>
                           <?php } ?>
                       </ul>
-                      <a class="aa-browse-btn" href="product.html">Tất cả sản phẩm <span class="fa fa-long-arrow-right"></span></a>
+                      <a class="aa-browse-btn" href="product.php?sort=Đầm">Xem thêm<span class="fa fa-long-arrow-right"></span></a>
                     </div>
                     <!-- / dam product category -->
                   </div>             
@@ -438,7 +468,7 @@
                             <li>
                               <figure>
                                 <a class="aa-product-img" href="product-detail.php?id=<?php echo $new_items['id']; ?>"><img style="height: 300px;width: 250px" src="<?php echo $new_items['images']; ?>" alt="polo shirt img"></a>
-                                <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Thêm vào giỏ hàng</a>
+                                <a class="aa-add-card-btn" href="add-cart.php?id=<?php echo $new_items['id']; ?>&return_url=<?php echo $ReturnURL; ?>"><span class="fa fa-shopping-cart"></span>Thêm vào giỏ hàng</a> 
                                   <figcaption>
                                   <h4 class="aa-product-title"><a href="product-detail.php?id=<?php echo $new_items['id']; ?>"><?php echo $new_items['name']; ?></a></h4>
                                   <span class="aa-product-price"><?php echo number_format($new_items['price']); ?>₫</span>
@@ -446,14 +476,14 @@
                               </figure>                        
                               <div class="aa-product-hvr-content">
                                 <a href="#" data-toggle="tooltip" data-placement="top" title="Yêu thích"><span class="fa fa-heart-o"></span></a>
-                                <a href="#" data-toggle="tooltip" data-placement="top" title="So sánh"><span class="fa fa-exchange"></span></a>                        
+                                <a href="#" data-toggle="tooltip" data-placement="top" title="So sánh"><span class="fa fa-exchange"></span></a>                  
                               </div>
                               <!-- product badge -->
                              <span class="aa-badge aa-hot" href="#">HOT!</span>                   
                             </li>
                       <?php } ?>                               
                   </ul>
-                  <a class="aa-browse-btn" href="product.html">Xem thêm<span class="fa fa-long-arrow-right"></span></a>
+                  <a class="aa-browse-btn" href="product.php?fill=2">Xem thêm<span class="fa fa-long-arrow-right"></span></a>
                 </div>
                 <!-- / popular product category -->         
               </div>

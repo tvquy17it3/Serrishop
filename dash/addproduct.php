@@ -98,9 +98,11 @@
                     <ul class="nav child_menu">
                       <li><a href="addproduct.php">Thêm sản phẩm</a></li>
                       <li><a href="allproduct.php">Tât cả sản phẩm</a></li>
-                      <li><a href="code.php">Mã giảm giá</a></li>
+                      <!-- <li><a href="code.php">Mã giảm giá</a></li> -->
                     </ul>
                   </li>
+                  <li><a href="code.php"><i class="fa fa-codiepie" aria-hidden="true"></i>Mã giảm giá</a>
+                  </li> 
                   <li><a><i class="fa fa-picture-o" aria-hidden="true"></i>Banner <span class="fa fa-chevron-down"></span></a>
                   </li>                 
                 </ul>
@@ -265,6 +267,7 @@
                       <option value="Quần dài">Quần dài</option>
                       <option value="Quần short">Quần short</option>
                       <option value="Đầm">Đầm</option>
+                      <option value="Hàng dệt kim">Hàng dệt kim</option>
                     </select>
                   </div>
                   <div class="form-group col-md-3">

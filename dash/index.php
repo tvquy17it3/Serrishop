@@ -84,9 +84,11 @@
                     <ul class="nav child_menu">
                       <li><a href="addproduct.php">Thêm sản phẩm</a></li>
                       <li><a href="allproduct.php">Tât cả sản phẩm</a></li>
-                      <li><a href="code.php">Mã giảm giá</a></li>
+                      <!-- <li><a href="code.php">Mã giảm giá</a></li> -->
                     </ul>
                   </li>
+                  <li><a href="code.php"><i class="fa fa-codiepie" aria-hidden="true"></i>Mã giảm giá</a>
+                  </li> 
                   <li><a><i class="fa fa-picture-o" aria-hidden="true"></i>Banner <span class="fa fa-chevron-down"></span></a>
                   </li>                 
                 </ul>
