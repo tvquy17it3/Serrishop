@@ -64,7 +64,7 @@
               <div class="aa-header-top-right">
                 <ul class="aa-head-top-nav-right">
                   <!-- <li><a href="account.html" id="checkLogin1">Tài khoản</a></li> -->
-                  <li class="hidden-xs"><a href="cart.html">Giỏ hàng</a></li>
+                  <li class="hidden-xs"><a href="cart.php">Giỏ hàng</a></li>
                   <li class="hidden-xs"><a href="checkout.html">Thanh toán</a></li>
                   <li>
                       <?php          
@@ -128,7 +128,7 @@
               <!-- / logo  -->
                <!-- cart box -->
               <div class="aa-cartbox">
-                <a class="aa-cart-link" href="cart.html">
+                <a class="aa-cart-link" href="cart.php">
                   <span class="fa fa-shopping-basket"></span>
                   <span class="aa-cart-title">Giỏ hàng</span>
                   <span class="aa-cart-notify"><?php echo $prd;?></span>
