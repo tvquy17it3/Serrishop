@@ -9,6 +9,8 @@
  // so san pham da add vao cart
   $prd = 0;
   $th = 0;
+  $idcode = 0;
+  $percent = 0;
   if(isset($_SESSION['cart']))
   {
     $prd = count($_SESSION['cart']);
@@ -16,6 +18,9 @@
     if ($prd==0) {
       unset($_SESSION['cart']);
     }
+  }
+  if(isset($_SESSION['idcode'])){
+    $idcode = $_SESSION['idcode'];
   }
 ?>
 <!DOCTYPE html>
@@ -83,6 +88,24 @@
   }
 ?>
 
+<?php //check code
+  if(isset($_POST['check_code']))
+  {
+    $idcode1 = $_POST["idcode"];
+    $sqlcheck = "SELECT * from code where idcode = '$idcode1'";
+    $resultCode = $conn->query($sqlcheck);
+    if ($resultCode->num_rows !=0) {
+        $_SESSION['idcode'] = $idcode1;
+        echo("<script>location.href = 'cart.php';</script>");
+    }else{
+      echo '<script language="javascript">';
+      echo 'alert("Mã không tồn tại!")';
+      echo '</script>';
+    } 
+
+  }
+?>
+
  <!-- Cart view section -->
  <section id="cart-view">
    <div class="container">
@@ -93,6 +116,7 @@
                <div class="table-responsive">
                  <h3 style="font-weight: bold;"><?php if($th!=0) {echo "Tóm tắt mặt hàng (".$th.")";} else {echo"Bạn chưa chọn sản phẩm nào!";} ?></p> <small></small>
                 </h3>
+                <?php if ($th!=0): ?>
                  <form method="post">
                   <table class="table">
                     <thead>
@@ -166,20 +190,22 @@
 
                       <tr>
                         <td colspan="7" class="aa-cart-view-bottom">
+                          <form method="post">
                           <div class="aa-cart-coupon">
-                            <input class="aa-coupon-code" type="text" placeholder="Nhập mã">
-                            <input class="aa-cart-view-btn" type="submit" value="Kiểm tra">
+                            <input class="aa-coupon-code" type="text" placeholder="Nhập mã" name="idcode">
+                            <input class="aa-cart-view-btn" type="submit" value="Kiểm tra" name="check_code">
                           </div>
-                          <?php if ($th!=0): ?>
+                          </form>
                             <input class="aa-cart-view-btn" type="submit" name="update_cart" value="Cập nhật lại giỏ hàng">
-                          <?php endif ?>
                         </td>
                       </tr>
                       </tbody>
                   </table>
                   </form>
+                  <?php endif ?>
                 </div>
 
+            <?php if ($th!=0): ?>
              <!-- Cart Total view -->
              <div class="cart-view-total">
                <h4>Tính tiền</h4>
@@ -190,19 +216,44 @@
                      <td><?php echo number_format($sum_all); ?>₫</td>
                    </tr>
                    <tr>
-                     <th>Mã giảm giá</th>
-                     <td>-20.000đ</td>
+                     <th>Mã: 
+                      <?php
+                          if($idcode){
+                            echo $idcode;
+                          }
+                          $giam=0;
+                      ?>
+                     </th>
+                     <td>
+                      <?php //check code
+                          if($idcode)
+                          {
+                            $sqlcheck = "SELECT * from code where idcode = '$idcode'";
+                            if ($resultCode = $conn->query($sqlcheck)) {
+                              while($rs = mysqli_fetch_array($resultCode))
+                              {
+                                  $percent= $rs['percent'];
+                                  $giam = ($sum_all/100 )* $percent;
+                                  echo "-".number_format($giam)."đ (".$percent."%)";
+                              } 
+                            }else{
+                              echo "0đ";
+                            }
+                          }else{
+                            echo "0đ";
+                          }
+                        ?>
+                     </td>
                    </tr>
                    <tr>
                      <th>Tổng cộng</th>
-                     <td>275.000đ</td>
+                     <td><?php echo number_format($sum_all-$giam); ?>₫</td>
                    </tr>
                  </tbody>
                </table>
-               <?php if ($th!=0): ?>
                 <a href="checkout.html" class="aa-cart-view-btn">mua hàng</a>
-              <?php endif ?>
              </div>
+             <?php endif ?>
            </div>
          </div>
        </div>
@@ -312,7 +363,7 @@
               <span class="fa fa-cc-mastercard"></span>
               <span class="fa fa-cc-visa"></span>
               <span class="fa fa-paypal"></span>
-              <span class="fa fa-cc-discover" onclick="checkCookie()"></span>
+              <span class="fa fa-cc-discover"></span>
             </div>
           </div>
         </div>

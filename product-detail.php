@@ -137,7 +137,7 @@
                         <div class="aa-color-tag">
                           <!--  <a href="#" class="aa-color-yellow"></a>   -->                
                           <!-- <a href="#" class="aa-color-pink"></a> -->
-                          <a href="#" class="aa-color-white"></a>                      
+                          <!-- <a href="#" class="aa-color-white"></a>   -->                    
                         </div>
                         <div class="aa-prod-quantity">
                           <form action="">
@@ -165,7 +165,9 @@
                           </p>
                         </div>
                         <div class="aa-prod-view-bottom">
+                          <?php if ($sanpham_items['status']>0): ?>
                           <a class="aa-add-to-cart-btn" href="add-cart.php?id=<?php echo $sanpham_items['id']; ?>&return_url=<?php echo $ReturnURL; ?>">Thêm vào giỏ hàng</a>
+                          <?php endif ?>
                           <a class="aa-add-to-cart-btn" href="#">So sánh</a>
                         </div>
                       </div>

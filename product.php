@@ -157,7 +157,10 @@
                             <li>
                               <figure>
                                 <a class="aa-product-img" href="product-detail.php?id=<?php echo $new_items['id']; ?>"><img style="height: 300px;width: 250px" src="<?php echo $new_items['images']; ?>" alt="polo shirt img"></a>
-                                <a class="aa-add-card-btn" href="add-cart.php?id=<?php echo $new_items['id']; ?>&return_url=<?php echo $ReturnURL; ?>"><span class="fa fa-shopping-cart" ></span>Thêm vào giỏ hàng</a>
+                                <?php if ($new_items['status']>0): ?>
+                                  <a class="aa-add-card-btn" href="add-cart.php?id=<?php echo $new_items['id']; ?>&return_url=<?php echo $ReturnURL; ?>"><span class="fa fa-shopping-cart"></span>
+                                Thêm vào giỏ hàng</a>  
+                                <?php endif ?>
                                   <figcaption>
                                   <h4 class="aa-product-title"><a href="product-detail.php?id=<?php echo $new_items['id']; ?>"><?php echo $new_items['name']; ?></a></h4>
                                   <span class="aa-product-price"><?php echo number_format($new_items['price']); ?>₫</span>
