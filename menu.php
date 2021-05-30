@@ -23,7 +23,7 @@
                 <ul class="aa-head-top-nav-right">
                   <!-- <li><a href="account.html" id="checkLogin1">Tài khoản</a></li> -->
                   <li class="hidden-xs"><a href="cart.php">Giỏ hàng</a></li>
-                  <li class="hidden-xs"><a href="checkout.html">Thanh toán</a></li>
+                  <!-- <li class="hidden-xs"><a href="checkout.php">Thanh toán</a></li> -->
                   <li>
                       <?php          
                           if (isset($_SESSION['username']))
@@ -41,19 +41,18 @@
                                   $name=$user_info['name'];
                               }    
                             }
-                                
                             if($level == 1)
                             {
-                              echo '<a href="dash/index.php">Xin chào: '.$name.'</a> <a href="logout.php">Đăng xuất</a>';
+                              echo '<a href="dash/index.php">Xin chào: '.$name.'</a> <a href="logout.php?return_url='.$ReturnURL.'">Đăng xuất</a>';
                             }
                             else
                             {
-                              echo '<a href="profile.php">Xin chào: '.$name.'</a><a href="logout.php">Đăng xuất</a>';
+                              echo '<a href="profile.php">Xin chào: '.$name.'</a><a href="logout.php?return_url='.$ReturnURL.'">Đăng xuất</a>';
                             }
                           }
                           else
                           {
-                            echo '<a href="account.php">Đăng nhập</a>';
+                            echo '<a href="account.php?return_url='.$ReturnURL.'">Đăng nhập</a>';
                           }
                       ?>
                     <!-- <a href="" data-toggle="modal" data-target="#login-modal" id="checkLogin2">Đăng nhập</a> -->
@@ -132,7 +131,7 @@
                     </li>
                   </ul>
                   <?php if ($th!=0): ?>
-                    <a class="aa-cartbox-checkout aa-primary-btn" href="checkout.html">Thanh toán</a>
+                    <a class="aa-cartbox-checkout aa-primary-btn" href="checkout.php">Thanh toán</a>
                   <?php endif ?>
                 </div>
               </div>
@@ -193,7 +192,7 @@
                   </li>
                 </ul>
               </li>
-              <li><a href="contact.html">VỀ CHÚNG TÔI</a></li>
+              <li><a href="contact.php">VỀ CHÚNG TÔI</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>

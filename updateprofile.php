@@ -126,12 +126,12 @@
                 $results = $conn->query($sql);
                 if ($results->num_rows > 0) {
                     while($obj = $results->fetch_object()) {
-                              $ho_ten=$obj->name;
-                              $email =$obj->email;
-                              $dien_thoai =$obj->phone;
-                              $gioi_tinh =$obj->gender;
-                              $dia_chi =$obj->address;
-                         }
+                        $ho_ten=$obj->name;
+                        $email =$obj->email;
+                        $dien_thoai =$obj->phone;
+                        $gioi_tinh =$obj->gender;
+                        $dia_chi =$obj->address;
+                   }
                 }
               ?>
                   <div class="row gutters-sm">
@@ -154,7 +154,7 @@
                         <ul class="list-group list-group-flush">
                           <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                             <i class="fa fa-info-circle" aria-hidden="true"></i>
-                            <span class="text-secondary">Hồ sơ của tôi</span>
+                           <span class="text-secondary"><a href="profile.php">Hồ sơ của tôi</a> </span>
                           </li>
                           <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                             <i class="fa fa-truck" aria-hidden="true" ></i>

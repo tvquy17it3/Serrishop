@@ -237,10 +237,10 @@
                                   echo "-".number_format($giam)."đ (".$percent."%)";
                               } 
                             }else{
-                              echo "0đ";
+                              echo "-0đ";
                             }
                           }else{
-                            echo "0đ";
+                            echo "-0đ";
                           }
                         ?>
                      </td>
@@ -251,7 +251,7 @@
                    </tr>
                  </tbody>
                </table>
-                <a href="checkout.html" class="aa-cart-view-btn">mua hàng</a>
+                <a href="checkout.php" class="aa-cart-view-btn">mua hàng</a>
              </div>
              <?php endif ?>
            </div>
@@ -372,34 +372,6 @@
     </div>
   </footer>
   <!-- / footer -->
-
-  <!-- Login Modal -->  
-  <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">                      
-        <div class="modal-body">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4>Đăng Nhập</h4>
-          <!-- <form class="aa-login-form"> -->
-            <div class="aa-login-form">
-            <label id="result"></label><br/>
-            <label for="">Địa chỉ email<span>*</span></label>
-            <input type="text" placeholder=""  name="username" id="username">
-            <label for="">Mật khẩu<span>*</span></label>
-            <input type="password" placeholder="" name="password" id="password">
-            <button class="aa-browse-btn" id="submit" onclick="validate()">Đăng nhập</button>
-            <label for="rememberme" class="rememberme"><input type="checkbox" id="rememberme"> Ghi nhớ tài khoản </label>
-            <p class="aa-lost-password"><a href="#">Bạn quên mật khẩu?</a></p>
-            <div class="aa-register-now">
-              Bạn chưa có tài khoản?<a href="account.html">Đăng ký ngay!</a>
-            </div>
-          </div>
-        </div>                        
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div>   
-
-
     
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -421,7 +393,6 @@
     <script type="text/javascript" src="js/nouislider.js"></script>
     <!-- Custom js -->
     <script src="js/custom.js"></script> 
-    <script src="js/login.js"></script> 
 
   </body>
 </html>

@@ -153,7 +153,7 @@
                         <ul class="list-group list-group-flush">
                           <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                             <i class="fa fa-info-circle" aria-hidden="true"></i>
-                            <span class="text-secondary">Hồ sơ của tôi</span>
+                            <span class="text-secondary"><a href="profile.php">Hồ sơ của tôi</a> </span>
                           </li>
                           <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                             <i class="fa fa-truck" aria-hidden="true" ></i>

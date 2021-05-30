@@ -1,3 +1,21 @@
+<?php
+  session_start();
+  // ini_set("display_errors","0");
+  // $loi="";
+  $ReturnURL = base64_encode($_SERVER['REQUEST_URI']);
+?>
+<?php
+  $prd = 0;
+  $th = 0;
+  if(isset($_SESSION['cart']))
+  {
+    $prd = count($_SESSION['cart']);
+    $th = $prd;
+    if ($prd==0) {
+      unset($_SESSION['cart']);
+    }
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -127,160 +145,17 @@
 
 
   </head>
-  <body onload="checkCookie()"> 
+  <body > 
+<?php 
+  include("connect.php");
+?>
+
   <a class="scrollToTop" href="#"><i class="fa fa-chevron-up"></i></a>
   <!-- Start header section -->
-  <header id="aa-header">
-    <!-- start header top  -->
-    <div class="aa-header-top">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="aa-header-top-area">
-              <!-- start header top left -->
-              <div class="aa-header-top-left">
-                <div class="aa-currency">
-                  <div class="dropdown">
-                    <a class="btn dropdown-toggle" href="#" type="button">
-                      Đà Nẵng
-                    </a>
-                  </div>
-                </div>
-                <div class="cellphone hidden-xs">
-                  <p><span class="fa fa-phone"></span>0776555522</p>
-                </div>
-              </div>
-              <!-- / header top left -->
-              <div class="aa-header-top-right">
-                <ul class="aa-head-top-nav-right">
-                  <li><a href="account.html" id="checkLogin1">Tài khoản</a></li>
-                  <li class="hidden-xs"><a href="cart.html">Giỏ hàng</a></li>
-                  <li class="hidden-xs"><a href="checkout.html">Thanh toán</a></li>
-                  <li>
-                    <a href="" data-toggle="modal" data-target="#login-modal" id="checkLogin2">Đăng nhập</a>
-                    <a href="profile.html" hidden id="checkEmail1"></a>
-                    <a href="" hidden id="checkEmail2" onclick="delete_cookie()">Đăng xuất</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- / header top  -->
-
-    <!-- start header bottom  -->
-    <div class="aa-header-bottom">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="aa-header-bottom-area">
-              <!-- logo  -->
-              <div class="aa-logo">
-                <!-- Text based logo -->
-                <a href="index.html">
-                  <span class="fa fa-shopping-cart"></span>
-                  <p>Serri<strong>Shop</strong> <span>Your Shopping Partner</span></p>
-                </a>
-                <!-- img based logo -->
-                <!-- <a href="index.html"><img src="img/logo.jpg" alt="logo img"></a> -->
-              </div>
-              <!-- / logo  -->
-               <!-- cart box -->
-              <div class="aa-cartbox">
-                <a class="aa-cart-link" href="cart.html">
-                  <span class="fa fa-shopping-basket"></span>
-                  <span class="aa-cart-title">Giỏ hàng</span>
-                  <span class="aa-cart-notify">1</span>
-                </a>
-                <div class="aa-cartbox-summary">
-                  <ul>
-                    <li>
-                      <a class="aa-cartbox-img" href="product-detail1.html"><img src="img/premium/sp3.jpg" alt="img"></a>
-                      <div class="aa-cartbox-info">
-                        <h4><a href="product-detail1.html">Áo thun tay dài form ngắn</a></h4>
-                        <p>1 x 295,000₫</p>
-                      </div>
-                      <a class="aa-remove-product" href="#"><span class="fa fa-times"></span></a>
-                    </li>                  
-                    <li>
-                      <span class="aa-cartbox-total-title">
-                        Tổng
-                      </span>
-                      <span class="aa-cartbox-total-price">
-                        295,000₫
-                      </span>
-                    </li>
-                  </ul>
-                  <a class="aa-cartbox-checkout aa-primary-btn" href="checkout.html">Thanh toán</a>
-                </div>
-              </div>
-              <!-- / cart box -->
-              <!-- search box -->
-              <div class="aa-search-box">
-                <form action="">
-                  <input type="text" name="" id="" placeholder="Bạn muốn tìm gì?">
-                  <button type="submit"><span class="fa fa-search"></span></button>
-                </form>
-              </div>
-              <!-- / search box -->             
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- / header bottom  -->
-  </header>
-  <!-- / header section -->
-  <!-- menu -->
-  <section id="menu">
-    <div class="container">
-      <div class="menu-area">
-        <!-- Navbar -->
-        <div class="navbar navbar-default" role="navigation">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>          
-          </div>
-          <div class="navbar-collapse collapse">
-            <!-- Left nav -->
-            <ul class="nav navbar-nav">
-              <!-- <li><a href="index.html">Trang chủ</a></li> -->
-              <li><a href="product.html">HÀNG MỚI</a></li>
-              <li><a href="product.html">SẢN PHẨM<span class="caret"></span></a>
-                <ul class="dropdown-menu">  
-                  <li><a href="product.html">HÀNG MỚI</a></li>
-                  <li><a href="product.html">BÁN CHẠY</a></li>
-                   <li><a href="product.html">SẢN PHẨM<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                      <li><a href="product.html">TẤT CẢ SẢN PHẨM</a></li>
-                      <li><a href="product.html">ÁO SƠ MI</a></li>
-                      <li><a href="product.html">ÁO KIỂU</a></li>
-                      <li><a href="product.html">ÁO THUN</a></li>
-                      <li><a href="product.html">ÁO KHOÁC</a></li>
-                      <li><a href="product.html">CHÂN VÁY</a></li>
-                      <li><a href="product.html">QUẦN DÀI</a></li>
-                      <li><a href="product.html">QUẦN SHORT</a></li>
-                      <li><a href="product.html">ĐẦM</a></li>
-                      <li><a href="product.html">HÀNG DỆT KIM</a></li>
-                      <li><a href="product.html">JEANS | DENIM</a></li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-              <li><a href="contact.html">VỀ CHÚNG TÔI</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>       
-    </div>
-  </section>
-  <!-- / menu -->  
+<?php 
+  include("menu.php");
+?>
+  
  
 <!-- start contact section -->
  <section id="aa-contact">
@@ -580,7 +455,5 @@
   <script type="text/javascript" src="js/nouislider.js"></script>
   <!-- Custom js -->
   <script src="js/custom.js"></script> 
-  <script src="js/login.js"></script> 
-
   </body>
 </html>

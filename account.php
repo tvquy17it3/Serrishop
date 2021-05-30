@@ -2,7 +2,7 @@
   session_start();
   // ini_set("display_errors","0");
   $loi="";
-  
+  $ReturnURL = base64_encode($_SERVER['REQUEST_URI']);
 ?>
 
 <?php
@@ -104,8 +104,13 @@
                               $_SESSION['username'] = $user;
                               $_SESSION['password']=$pass;
                                 // header('Location:index.php');
-                              // echo "ok";
-                              echo("<script>location.href = 'index.php';</script>");
+                              if (isset($_GET["return_url"])) {
+                                $return_url = base64_decode($_GET["return_url"]);
+                                // header('Location:'.$return_url);
+                                echo("<script>location.href = '$return_url';</script>");
+                              } else{
+                               echo("<script>location.href = 'index.php';</script>");
+                              } 
                           }else{
                               $loi="<p style='color: red'>Email hoặc mật khẩu không đúng!</p>";
                             } 
