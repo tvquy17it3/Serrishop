@@ -42,9 +42,11 @@
   </head>
 
   <body class="nav-md" >
-<?php 
+  <?php 
   include("../connect.php");
+  include("checkad.php");
 ?>
+
     <div class="container body">
       <div class="main_container">
         <div class="col-md-3 left_col">
@@ -62,7 +64,9 @@
               </div>
               <div class="profile_info">
                 <span>Welcome,</span>
-                <h2>Admin</h2>
+                <h2>
+                   <?php echo $nameAd; ?>
+                </h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -76,10 +80,10 @@
                   <li><a ><i class="fa fa-edit"></i>Đơn hàng<span class="fa fa-chevron-down" aria-hidden="true"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="index.php">Chưa xác nhận</a></li>
-                      <li><a href="#">Đã xác nhận</a></li>
-                      <li><a href="#">Đã gửi</a></li>
-                      <li><a href="#">Hoàn thành</a></li>
-                      <li><a href="#">Đã hủy</a></li>
+                      <li><a href="index.php?status=1">Đã xác nhận</a></li>
+                      <li><a href="index.php?status=2">Đã gửi</a></li>
+                      <li><a href="index.php?status=3">Hoàn thành</a></li>
+                      <li><a href="index.php?status=4">Đã hủy</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-bar-chart-o"></i>Thống kê<span class="fa fa-chevron-down"></span></a>
@@ -135,7 +139,7 @@
               <a data-toggle="tooltip" data-placement="top" title="Lock">
                 <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
               </a>
-              <a data-toggle="tooltip" data-placement="top" title="Logout" onclick="delete_cookie()">
+              <a data-toggle="tooltip" data-placement="top" title="Đăng xuất" href="../logout.php">
                 <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
               </a>
             </div>
@@ -144,83 +148,9 @@
         </div>
 
         <!-- top navigation -->
-        <div class="top_nav">
-          <div class="nav_menu">
-              <div class="nav toggle">
-                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
-              </div>
-              <nav class="nav navbar-nav">
-              <ul class=" navbar-right">
-                <li class="nav-item dropdown open" style="padding-left: 15px;">
-                  <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                    <img src="../img/userdash.png" alt="">Admin
-                  </a>
-                  <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item"  href="javascript:;">
-                      <span class="badge bg-red pull-right">50%</span>
-                      <span>Cài đặt</span>
-                    </a>
-                  <a class="dropdown-item"  href="javascript:;">Trợ giúp</a>
-                    <a class="dropdown-item" onclick="delete_cookie()"><i class="fa fa-sign-out pull-right"></i>Đăng xuất</a>
-                  </div>
-                </li>
-
-                <li role="presentation" class="nav-item dropdown open">
-                  <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
-                    <i class="fa fa-envelope-o"></i>
-                    <span class="badge bg-green">3</span>
-                  </a>
-                  <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
-                    <li class="nav-item">
-                      <a class="dropdown-item">
-                        <span class="image"><img src="../img/user13.png" alt="Profile Image" /></span>
-                        <span>
-                          <span>Thu Thắng</span>
-                          <span class="time">3 phút trước</span>
-                        </span>
-                        <span class="message">
-                          Yêu cầu về xử lý đơn hàng mã: serrishop324512
-                        </span>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="dropdown-item">
-                        <span class="image"><img src="../img/user11.png" alt="Profile Image" /></span>
-                        <span>
-                          <span>Uyển My</span>
-                          <span class="time">2 giờ trước</span>
-                        </span>
-                        <span class="message">
-                          Kích hoạt lại tài khoản tthang@vku.udn.vn
-                        </span>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="dropdown-item">
-                        <span class="image"><img src="../img/user11.png" alt="Profile Image" /></span>
-                        <span>
-                          <span>Diệu Mi</span>
-                          <span class="time">3 giờ trước</span>
-                        </span>
-                        <span class="message">
-                          Đã gửi đơn.
-                        </span>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <div class="text-center">
-                        <a class="dropdown-item">
-                          <strong>Xem tất cả</strong>
-                          <i class="fa fa-angle-right"></i>
-                        </a>
-                      </div>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
+        <?php 
+          include("topmenu.php");
+        ?>
         <!-- /top navigation -->
 
         <!-- page content -->
@@ -266,7 +196,7 @@
                           <td><?php echo number_format($row['price']);?></td>
                           <td>
                              <button type="button" class="btn btn-danger" onclick="return confirm('Bạn chắc chắn xóa!!?')"><a href="delproduct.php?id=<?php echo $row['id']; ?>">Xóa</a></button>
-                             <button type="button" class="btn btn-warning" onclick="thongbao();">Chỉnh sửa</button>
+                             <button type="button" class="btn btn-warning"><a href="edit-product.php?id_product=<?php echo $row['id']; ?>">Chỉnh sửa</a></button>
                           </td>
                         </tr>
                       <?php

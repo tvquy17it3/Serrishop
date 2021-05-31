@@ -26,7 +26,12 @@
   }
 
 ?>
-
+<?php 
+      include("connect.php");
+        if (!isset($_SESSION['username'])){
+          header("Location:account.php?return_url=$ReturnURL");
+        } 
+    ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -63,13 +68,6 @@
  <!-- SCROLL TOP BUTTON -->
     <a class="scrollToTop" href="#"><i class="fa fa-chevron-up"></i></a>
   <!-- END SCROLL TOP BUTTON -->
-
-    <?php 
-      include("connect.php");
-        if (!isset($_SESSION['username'])){
-          header("Location:account.php?return_url=$ReturnURL");
-        } 
-    ?>
 
   <a class="scrollToTop" href="#"><i class="fa fa-chevron-up"></i></a>
   <!-- Start header section -->

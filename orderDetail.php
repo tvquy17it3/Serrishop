@@ -52,7 +52,6 @@
     <link href="css/style.css" rel="stylesheet">    
     <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
-    <link href="css\toastr.css" rel="stylesheet"/>
     <style type="text/css">
       .main-body {
           padding: 15px;
@@ -120,20 +119,6 @@
         <div class="col-md-12">
           <div class="container">
             <div class="main-body">
-              <?php
-                $email= $_SESSION['username'];
-               $sql = "SELECT * FROM users where email='$email'";
-                $results = $conn->query($sql);
-                if ($results->num_rows > 0) {
-                    while($obj = $results->fetch_object()) {
-                        $ho_ten=$obj->name;
-                        $email =$obj->email;
-                        $dien_thoai =$obj->phone;
-                        $gioi_tinh =$obj->gender;
-                        $dia_chi =$obj->address;
-                   }
-                }
-              ?>
                   <div class="row gutters-sm">
                     <div class="col-md-4 mb-3">
                       <div class="card">
@@ -141,7 +126,7 @@
                           <div class="d-flex flex-column align-items-center text-center">
                             <img src="img/user11.png" alt="Admin" class="rounded-circle" width="150">
                             <div class="mt-3">
-                              <h4><?php echo $ho_ten;?></h4>
+                              <!-- <h4><?php echo $ho_ten;?></h4> -->
                               <!-- <p class="text-secondary mb-1">Khách hàng thân thiết</p> -->
                               <p class="text-muted font-size-sm">Khách hàng thân thiết</p>
                               <button class="btn btn-primary">Theo dõi</button>
@@ -168,76 +153,95 @@
                       </div>
                     </div>
                     <div class="col-md-8">
-                      <?php
-                      if (isset($_POST["submit_update"])) {
-                          $ho_ten = $_POST["ho_ten"];
-                          $dien_thoai=$_POST["dien_thoai"];
-                          $dia_chi=$_POST["dia_chi"];
-
-                          if(isset($_POST['gioi_tinh'])){
-                              $gioi_tinh = $_POST['gioi_tinh'];
-                            } else {
-                                $gioi_tinh= "";
-                            }
-                            $email= $_SESSION['username'];
-                            $sql3="UPDATE users SET name='$ho_ten',phone='$dien_thoai', gender='$gioi_tinh',address='$dia_chi' WHERE email='$email'";
-                            $result3 = $conn->query($sql3);
-                            if ($result3) {
-                              echo '<h2 class="mb-0" style="color: blue">Cập nhật thành công!!</h2>';
-                            }
-                            
-                        }
-                      ?>
-                      <form action="" method="POST">
                       <div class="card mb-3">
-                        <p style="align-content: center; margin-top: 5px;margin-right: 8px;"> <a href="profile.php" style="float: right;color: red">Huỷ</a> </p>
-                        <div class="card-body">
+                        <p style="align-content: center; margin-top: 5px;margin-right: 8px;"> <a href="contact.php" style="float: right;color: red">Liên hệ</a> </p>
+                        <div class="card-body" style="margin: 20px;">
                           <div class="row">
-                            <div class="col-sm-3">
-                              <h6 class="mb-0">Họ Tên</h6>
+                            <?php
+                            $email= $_SESSION['username'];
+                            $id_order = $_GET['id_order'];
+                            $sql = "SELECT * FROM donhang where email='$email' and id = '$id_order'";
+                            $results = $conn->query($sql);
+                            if ($results->num_rows > 0) {
+                                while($obj = $results->fetch_object()) {
+                                  $id_order = $obj->id;
+                                  echo "<p><b>Mã đơn hàng:</b> ".$id_order."</p>";
+                                  echo "<p><b>Họ tên:</b> ".$obj->name."</td>";
+                                  echo "<p><b> Số điện thoại:</b> ".$obj->phone."</td>";
+                                  echo "<p><b>Địa chỉ:</b> ".$obj->address."</p>";
+                                  echo "<p><b>Thời gian đặt:</b> ".$obj->orderdate."</p>";
+                                  $trangthai = $obj->status;
+                                  $giam = number_format($obj->discount);
+                                  $ship = number_format(20000);
+                                  $sum_alls = number_format($obj->total);
+                                  echo "<p><b>Trạng thái:</b> ";
+                                  switch ($obj->status) {
+                                          case 0:
+                                              echo "<td>Chưa xác nhận</td>";
+                                             break;
+                                          case 1:
+                                              echo "<td>Đã xác nhận</td>";
+                                             break;
+                                          case 2:
+                                              echo "<td>Đang vận chuyển</td>";
+                                              break;
+                                          case 3:
+                                              echo "<td>Hoàn thành</td>";
+                                            break;
+                                          case 4:
+                                              echo "<td>Đã hủy</td>";
+                                              break;
+                                          default:
+                                                echo "<td>Đã hủy</td>";
+                                              break;
+                                }
+                                echo "</p>";
+                              }
+                            }else{
+                              echo("<script>location.href = 'ordered.php';</script>");
+                            }
+                          ?>
+                            <table class="table">
+                              <thead class="thead-dark" >
+                                <tr>
+                                  <th scope="col">Mã sản phẩm</th>
+                                  <th scope="col">Tên sản phẩm</th>
+                                  <th scope="col">Số lượng</th>
+                                  <th scope="col">Giá</th>
+                                  <th scope="col">Tổng</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <?php
+                                  $sum_all = 0;
+                                  $sql = "SELECT * FROM orderdetail where idordered='$id_order'";
+                                  $results = $conn->query($sql);
+                                  if ($results->num_rows > 0) {
+                                      while($obj = $results->fetch_object()) {
+                                        echo "<tr>";
+                                        // `id`, `name`, `email`, `phone`, `address`, `discount`, `total`, `orderdate`, `status`
+                                        echo "<th scope='row'>".$obj->idproduct."</th>";
+                                        echo "<td>".$obj->name."<br><a href='product-detail.php?id=".$obj->idproduct."'>Xem lại</a></td>";
+                                        echo "<td>".$obj->qty."</td>";
+                                        echo "<td>".number_format($obj->price)."đ</td>";
+                                        echo "<td>".number_format($obj->price * $obj->qty)."đ</td>";
+                                        echo "</tr>";
+                                        $sum_all += $obj->price * $obj->qty; 
+                                      }
+                                  }
+                                ?>
+                              </tbody>
+                            </table>
+                            <div class="">
+                              <hr style="width: 300px;">
+                              <h4>Tổng tiền hàng: <?php echo number_format($sum_all); ?>đ</h4>
+                              <h4>Giảm giá: -<?php echo $giam; ?>đ</h4>
+                              <h4>Phí ship: +<?php echo $ship; ?>đ</h4>
+                              <h4 style="font-weight: bold;">Thành tiền: <?php echo $sum_alls; ?>đ</h4>
                             </div>
-                            <div class="col-sm-9 text-secondary">
-                              <input class="form-control" type="text" value="<?php echo $ho_ten;?>" name="ho_ten">
-                            </div>
-                          </div>
-                          <hr>
-                          <div class="row">
-                            <div class="col-sm-3">
-                              <h6 class="mb-0">Số điện thoại</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                              <input class="form-control" type="text" value="<?php echo $dien_thoai;?>" name="dien_thoai">
-                            </div>
-                          </div>
-                          <hr>
-                          <div class="row">
-                            <div class="col-sm-3">
-                              <h6 class="mb-0">Địa chỉ</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                              <input class="form-control" type="text" value="<?php echo $dia_chi;?>" name="dia_chi">
-                            </div>
-                          </div>
-                          <hr>
-                          <div class="row">
-                            <div class="col-sm-3">
-                              <h6 class="mb-0">Giới tính</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                              Nam <input type="radio" name="gioi_tinh" value="Nam" <?php if (isset($gioi_tinh) && $gioi_tinh=="Nam") { echo "checked"; }  ?>  >
-                              Nữ <input type="radio" name="gioi_tinh" value="Nữ" <?php if (isset($gioi_tinh) && $gioi_tinh=="Nữ") { echo "checked"; } ?> >
-                            </div>
-                          </div>
-                          <div class="row" >
-                              <div class="col-sm-3"></div>
-                              <div class="col-sm-3">
-                                <input type="submit" class="btn btn-primary" value="Cập nhật" name="submit_update">
-                              </div>
-                              <div class="col-sm-3"></div>
                           </div>
                         </div>
                       </div>
-                      </form>
                     </div>
                   </div>
                 </div>
@@ -359,18 +363,5 @@
   <script type="text/javascript" src="js/nouislider.js"></script>
   <!-- Custom js -->
   <script src="js/custom.js"></script> 
-  <script src="js\toastr.js"></script>
-<!--   <script type="text/javascript">
-    $(document).ready(function() {
-      
-          if (sessionStorage.getItem("profile") == "ok") {
-            toastr["success"]("Cập nhật thành công!");
-            sessionStorage.removeItem('profile');
-          }
-    })
-   function jsfunction() {
-     alert(sessionStorage.getItem("profile"));
-   }
-</script> -->
   </body>
 </html>

@@ -142,7 +142,11 @@
                         }elseif (isset($_GET['fill'])) {
                           $ratings= $_GET['fill'];
                           $new_query="SELECT * FROM products where ratings = '$ratings' order by id limit 12";
-                        }else{
+                        }elseif(isset($_GET['search'])){
+                          $search = $_GET['search'];
+                          $new_query="SELECT * FROM products where category = N'$search' or name =N'$search' order by id limit 12";
+                        }
+                        else{
                           $new_query="SELECT * FROM products order by id desc limit 12";
                         }
 

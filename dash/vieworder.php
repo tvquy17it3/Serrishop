@@ -1,7 +1,20 @@
 <?php
   session_start();
   // ini_set("display_errors","0");
+  // $loi="";
+  $ReturnURL = base64_encode($_SERVER['REQUEST_URI']);
+  date_default_timezone_set ("Asia/Saigon"); 
 ?>
+<?php
+  $nameAd = "";
+  if (isset($_GET['id'])) {
+    $idordersp= $_GET['id'];
+  }else {
+    echo("<script>location.href = 'index.php';</script>");
+  }
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -13,7 +26,6 @@
 	<link rel="icon" href="images/favicon.ico" type="image/ico" />
 
     <title>Serri Shop | Admin</title>
-
     <!-- Bootstrap -->
     <link href="../vendors/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -32,13 +44,6 @@
 
     <!-- Custom Theme Style -->
     <link href="../vendors/css/custom.min.css" rel="stylesheet">
-    <style type="text/css">
-      .form-control{
-        margin:0px;border: 1px solid #ced4da;
-        padding: 6px;
-        border-radius: 10px;
-      }
-    </style>
   </head>
 
   <body class="nav-md" >
@@ -155,107 +160,107 @@
 
         <!-- page content -->
         <div class="right_col" role="main">
-          <!-- top tiles -->
-          <div class="row" style="display: inline-block;" >
-            <!-- <h1>THÊM SẢN PHẨM</h1> -->
-          </div>
-          <!-- /top tiles -->
 
-          <div class="row" style="margin: 50px;">
-            <div class="col-md-12 col-sm-12 " >
-              <div style="text-align: center;font-size: 26px">
-                <p><h1 >MÃ GIẢM GIÁ</h1></p>
-              </div>
+          <div class="row">
+            <div class="col-md-12 col-sm-12 ">
+              <p style="font-size: 36px;align-content: center;">Chi tiết đơn hàng!</p>
               <?php
-                if(isset($_POST['add-code']))// neu bien ok ton tai  
+                if(isset($_POST['update_status']))
                 {
-                    $ipcode = $_POST['ipcode'];
-                    $ipgiam = $_POST['ipgiam'];
-                    $ipcounts = $_POST['ipcounts'];
-                    $ipstart = $_POST['ipstart'];
-                    $ipfinish = $_POST['ipfinish'];           
-                    // `id`, `idcode`, `percent`, `description`, `counts`, `start`, `finish`
+                    $id_order1 = $_POST['id_order'];
+                    $status1 = $_POST['status'];
 
-                    $upload_query =mysqli_query($conn,"INSERT INTO code(idcode, percent, counts, start, finish) VALUES ('".$ipcode."',".$ipgiam.",'".$ipcounts."','".$ipstart."','".$ipfinish."')");
-                    if ($upload_query) {
-                      echo "<h5 style='color: blue'>Thêm thành công mã: <i>".$ipcode.", giảm: ".$ipgiam."%</i></h5>";
+                    $update_query =mysqli_query($conn,"  UPDATE donhang SET status = '$status1' WHERE id = '$id_order1'");
+                    if ($update_query) {
+                      echo "<h5 style='color: blue'>Đã cập nhật trạng thái!!</h5>";
                     }else {
                       echo "Đã có lỗi xảy ra: ".mysqli_error($conn);
                     }
-            
                 }
               ?>
-              <form action="code.php" method="post" name="form_code" >
-                  <div class="form-row">
-                    <div class="form-group col-md-3">
-                      <label for="inputCity">Mã giảm giá</label>
-                      <input type="text" class="form-control" name="ipcode" required value="<?php echo 'serrishop'.rand(100,1000).rand(100,1000).rand(100,1000);   ?>">
-                    </div>
-                    <div class="form-group col-md-2">
-                      <label for="inputState">Giảm %</label>
-                      <input type="text" class="form-control" name="ipgiam" required value="20">
-                    </div>
-                    <div class="form-group col-md-2">
-                      <label for="inputZip">Số lượng</label>
-                      <input type="text" class="form-control" name="ipcounts" required value="2">
-                    </div>
-                    <div class="form-group col-md-2">
-                      <label for="inputZip">Bắt đầu</label>
-                      <input type="date" class="form-control" name="ipstart" required value="<?php echo date('Y-m-d'); ?>">
-                    </div>
-                    <div class="form-group col-md-2">
-                      <label for="inputZip">Kết thúc</label>
-                      <input type="date" class="form-control"  name="ipfinish" required value="<?php echo date('Y-m-d'); ?>">
-                    </div>
-                    <div class="form-group col-md-1">
-                      <label for="inputZip">.</label>
-                      <button type="submit" class="btn btn-primary form-control" name="add-code">Tạo mã</button>
-                    </div>
+                <div class = "p-3 mb-2" style="background: #fff">
+                  <?php
+                      $sql = "SELECT * FROM donhang where id='$idordersp' ORDER BY id DESC";
+                      $results = $conn->query($sql);
+                      if ($results->num_rows > 0) {
+                          while($obj = $results->fetch_object()) {
+                            // `id`, `name`, `email`, `phone`, `address`, `discount`, `total`, `orderdate`, `status`
+                            $id_order = $obj->id;
+                            echo "<p>Mã đơn hàng: ".$id_order."</p>";
+                            echo "<p>Họ tên: ".$obj->name."</td>";
+                            echo "<p> Số điện thoại: ".$obj->phone."</td>";
+                            echo "<p>Địa chỉ: ".$obj->address."</p>";
+                            echo "<p>Thời gian đặt: ".$obj->orderdate."</p>";
+                            $trangthai = $obj->status;
+                            $giam = number_format($obj->discount);
+                            $ship = number_format(20000);
+                            $sum_alls = number_format($obj->total);
+                          }
+                      }else{
+                        echo("<script>location.href = 'index.php';</script>");
+                      }
+                    ?>
+                    <form method="POST">
+                        <input type="" name="id_order" hidden value="<?php echo $id_order;?>">
+                        <select name="status" class="btn btn-light">
+                          <option value="<?php echo $trangthai;?>"><?php echo $trangthai;?></option>
+                          <option value="0">0 - Chưa xác nhận</option>
+                          <option value="1">1 - Đã xác nhận</option>
+                          <option value="2">2 - Đang vận chuyển</option>
+                          <option value="3">3 - Hoàn thành</option>
+                          <option value="4">4 - Đã hủy</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary btn-sm" name="update_status">CẬP NHẬT TRẠNG THÁI</button>
+                    </form>
                   </div>
-                </form>
-
+              
               <table class="table">
-                <p style="margin-bottom: 30px;"></p>
-                     <?php 
-                     // SELECT `id`, `idcode`, `percent`, `description`, `counts`, `start`, `finish` FROM `code` WHERE 1
-                        $result = mysqli_query($conn,"SELECT * FROM code ORDER BY id DESC");
-                      ?>
-
-                <thead class="thead-dark">
+                <thead class="thead-dark" >
                   <tr>
-                    <th scope="col">Mã giảm giá</th>
-                    <th scope="col">Giảm %</th>
-                    <!-- <th scope="col">Mô tả</th> -->
-                    <th scope="col">Còn lại</th>
-                    <th scope="col">Ngày bắt đầu</th>
-                    <th scope="col">Kết thúc</th>
-                    <th scope="col">XÓA/SỬA</th>
+                    <th scope="col">Mã sản phẩm</th>
+                    <th scope="col">Tên sản phẩm</th>
+                    <th scope="col">Số lượng</th>
+                    <th scope="col">Giá</th>
+                    <th scope="col">Tổng</th>
+                    <th scope="col">Cập nhật</th>
                   </tr>
                 </thead>
                 <tbody>
                   <?php
-                    // output data of each row
-                    while($row = mysqli_fetch_assoc($result)) {
-                     ?>
-                        <tr>
-                          <th scope="row" ><?php echo $row['idcode']?></th>
-                          <td><?php echo $row['percent']; ?></td>
-                          <!-- <td><?php echo $row['description']?></td> -->
-                          <td><?php echo $row['counts']?></td>
-                          <td><?php echo $row['start']?></td>
-                          <td><?php echo $row['finish']?></td>
-                          <td>
-                             <button type="button" class="btn btn-danger" onclick="return confirm('Bạn chắc chắn xóa!!?')"><a href="delcode.php?id=<?php echo $row['id']; ?>">Xóa</a></button>
-                             <button type="button" class="btn btn-warning" onclick="thongbao();">Chỉnh sửa</button>
-                          </td>
-                        </tr>
-                      <?php
-                    } ?>
+                    $sum_all = 0;
+                    $sql = "SELECT * FROM orderdetail where idordered='$idordersp'";
+                    $results = $conn->query($sql);
+                    if ($results->num_rows > 0) {
+                        while($obj = $results->fetch_object()) {
+                          echo "<tr>";
+                          // `id`, `name`, `email`, `phone`, `address`, `discount`, `total`, `orderdate`, `status`
+                          echo "<th scope='row'>".$obj->idproduct."</th>";
+                          echo "<td>".$obj->name."<br><a href='../product-detail.php?id=".$obj->idproduct."'>Xem</a></td>";
+                          echo "<td>".$obj->qty."</td>";
+                          echo "<td>".number_format($obj->price)."đ</td>";
+                          echo "<td>".number_format($obj->price * $obj->qty)."đ</td>";
+                          echo "<td>
+                                  <button type='button' class='btn bg-info' onclick='thongbao();'><a style='color: white' >Chỉnh sửa</a></button>
+                                </td>";
+                          echo "</tr>";
+                          $sum_all += $obj->price * $obj->qty; 
+                        }
+                    }
+                  ?>
                 </tbody>
               </table>
+              <div class="p-3 mb-2 bg-info text-white">
+                <ul>
+                <li><h2>Tổng tiền hàng: <?php echo number_format($sum_all); ?>đ</h2></li>
+                <li><h2>Giảm giá: -<?php echo $giam; ?>đ</h2></li>
+                <li><h2>Phí ship: +<?php echo $ship; ?>đ</h2></li>
+                <li><h2 style="font-weight: bold;">Thành tiền: <?php echo $sum_alls; ?>đ</h2></li>
+                </ul>
+              </div>
+              <div style="margin-bottom: 50px;"></div>
             </div>
+
         </div>
-        <!-- /page content -->
       </div>
     </div>
 
@@ -298,11 +303,10 @@
     <script src="../vendors/daterangepicker.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="../vendors/custom.min.js"></script>
-    <script type="text/javascript">
+	    <script type="text/javascript">
       function thongbao(){
         alert("Chưa hoàn thiện hành động này!");
       }
     </script>
-	
   </body>
 </html>

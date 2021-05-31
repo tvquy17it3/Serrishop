@@ -157,11 +157,11 @@
                           </li>
                           <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                             <i class="fa fa-truck" aria-hidden="true" ></i>
-                            <span class="text-secondary">Trạng thái đơn hàng</span>
+                            <span class="text-secondary"><a href="ordered.php">Trạng thái đơn hàng</a></span>
                           </li>
                           <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                             <i class="fa fa-heart" aria-hidden="true" style="color: red"></i>
-                            <span class="text-secondary"><a href="wishlist.html">Yêu thích</a></span>
+                            <span class="text-secondary"><a href="">Yêu thích</a></span>
                           </li>
                         </ul>
                       </div>

@@ -69,11 +69,15 @@
             <div class="aa-product-details-content">
               <?php
                   if(!isset($_GET['id'])){
-                    header('location:index.php');
+                    echo("<script>location.href = 'index.php';</script>");
                   }
                   $id = $_GET['id'];
                   $sanpham ="SELECT * FROM products where id=".$id;
-                  $sanpham_res = mysqli_query($conn,$sanpham) or die("Cannot select table!");
+                  $sanpham_res = mysqli_query($conn,$sanpham);
+                  $Countprd = mysqli_num_rows($sanpham_res);
+                  if ($Countprd ==0) {
+                          echo "<span class='example-val'><h3>Không tồn tại sản phẩm!!</h3></span>" ;
+                  }
                   while ($sanpham_items = mysqli_fetch_array($sanpham_res))
                   {
                 ?>
@@ -153,15 +157,10 @@
                                   }
                                 }
                               ?>
-<!--                               <option selected="1" value="0">1</option>
-                              <option value="1">2</option>
-                              <option value="2">3</option>
-                              <option value="3">4</option>
-                              <option value="4">5</option> -->
                             </select>
                           </form>
                           <p class="aa-prod-category">
-                            Danh mục: <a href="#"><?php echo $sanpham_items['category']; ?></a>
+                            Danh mục: <a href="product.php?sort=<?php echo $sanpham_items['category']; ?>"><?php echo $sanpham_items['category']; ?></a>
                           </p>
                         </div>
                         <div class="aa-prod-view-bottom">

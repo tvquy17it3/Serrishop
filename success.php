@@ -3,6 +3,7 @@
   // ini_set("display_errors","0");
   // $loi="";
   $ReturnURL = base64_encode($_SERVER['REQUEST_URI']);
+  date_default_timezone_set ("Asia/Saigon"); 
 ?>
 <?php
 
@@ -17,6 +18,7 @@
     $th = $prd;
     if ($prd==0) {
       unset($_SESSION['cart']);
+      echo("<script>location.href = 'index.php';</script>");
     }
   }
   if(isset($_SESSION['idcode'])){
@@ -29,7 +31,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">    
-    <title>Serri Shop | Cart Page</title>
+    <title>Serri Shop | Success</title>
     
     <!-- Font awesome -->
     <link href="css/font-awesome.css" rel="stylesheet">
@@ -54,15 +56,6 @@
     <!-- Google Font -->
     <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
-    
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
   </head>
   <body>
     <?php 
@@ -75,6 +68,7 @@
   include("menu.php");
 ?>
 
+<section id="aa-subscribe">
 <form method="post">
   <div class="main-shopping">
     <?php
@@ -87,7 +81,7 @@
       $sum_all = 0;
       $now = getdate();
       $giam = 0;
-      $currentDate =$now["mday"] . "/" . $now["mon"] . "/" . $now["year"] ; 
+      $currentDate =$now["hours"].":".$now["minutes"].":".$now["seconds"]." ".$now["mday"] . "/" . $now["mon"] . "/" . $now["year"] ; 
       if($_SESSION['cart'] != NULL)
       {
         foreach($_SESSION['cart'] as $id =>$prd)
@@ -115,18 +109,39 @@
           }
         }
         $sum_all = $sum_all - $giam + 20000;
-        $insertDonhang = mysqli_query($conn,"INSERT INTO donhang (name, email, phone, address, total, orderdate, status) VALUES ('".$items['name']."','".$items['email']."','".$items['phone']."','".$items['address']."','".$sum_all."','".$currentDate."','0')"); 
+        $insertDonhang = mysqli_query($conn,"INSERT INTO donhang (name, email, phone, address, discount, total, orderdate, status) VALUES ('".$items['name']."','".$items['email']."','".$items['phone']."','".$items['address']."','".$giam."','".$sum_all."','".$currentDate."','0')"); 
          
         if ($insertDonhang) {
-          echo "Success";
+          $errors = 0;
+          $id_order= mysqli_insert_id($conn);
+          $item_result = mysqli_query($conn,$item_query);
+          while ($rows = mysqli_fetch_array($item_result))
+          {
+            $insert1 = mysqli_query($conn,"INSERT INTO orderdetail (idordered, idproduct, name, qty , price, orderdate, status) 
+            VALUES ('".$id_order."','".$rows['id']."','".$rows['name']."','".$_SESSION['cart'][$rows['id']]."','".$rows['price']."','".$currentDate."','0')"); 
+              if (!$insert1) {
+                  $errors = 1;
+                  echo "Đã có lỗi xảy ra: ".mysqli_error($conn);
+              }
+          }
+          if ($errors==0) {
+            unset($_SESSION['cart']);
+            unset($_SESSION['idcode']);
+            echo '<script language="javascript">';
+            echo 'alert("Đặt hàng thành công!");';
+            echo("location.href = 'ordered.php';");
+            echo '</script>';
+          }
         }else {
-          echo "Đã có lỗi xảy ra: ".mysqli_error($conn);
-        }
+            echo "Đã có lỗi xảy ra: ".mysqli_error($conn);
+          }
       }
-    } 
+    }else{
+      echo("<script>location.href = 'index.php';</script>");
+    }
   ?>
 </form>
-
+ </section>
 
 
   <!-- Subscribe section -->
