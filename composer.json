@@ -1,0 +1,9 @@
+{
+    "autoload": {
+        "files": [
+            "./model/database.php",
+            "./Component/list_product.php"
+
+        ]
+    }
+}
