@@ -123,7 +123,7 @@
   <script type="text/javascript" src="public/js/jquery.smartmenus.bootstrap.js"></script>  
   <!-- To Slider JS -->
   <script src="public/js/sequence.js"></script>
-  <script src="public/js/sequence-theme.modern-slide-in.js"></script>  
+  <script src="public/js/sequence-theme.modern-slide-in.js"></script> 
   <!-- Product view slider -->
   <script type="text/javascript" src="public/js/jquery.simpleGallery.js"></script>
   <script type="text/javascript" src="public/js/jquery.simpleLens.js"></script>

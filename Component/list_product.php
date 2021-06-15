@@ -2,13 +2,15 @@
  require 'vendor/autoload.php';
 
  class ListProduct extends database{
+    public $Countprd=0;
     public function Product($sql)
     {   
         $ReturnURL = base64_encode($_SERVER['REQUEST_URI']);            
         $this->select($sql);
         while ($new_items=$this->fetch())
         {
-           echo"<li>
+            $this->Countprd++;
+            echo"<li>
                     <figure>
                         <a class='aa-product-img' href='product-detail.php?id=$new_items->id'>
                             <img style='height: 300px;width: 250px' src='$new_items->images' alt='polo shirt img'>
@@ -21,6 +23,11 @@
                         echo "<figcaption>
                             <h4 class='aa-product-title'><a href='product-detail.php?id=$new_items->id'>$new_items->name</a></h4>
                             <span class='aa-product-price'>".number_format($new_items->price)."₫</span>
+                            <p class='aa-product-descrip'>
+                                Màu sắc: Trắng và Xám<br/>
+                                Chất liệu: Thun 2 chiều<br/>
+                                Đặc tính: Co giãn tốt, ít nhăn<br/>
+                              </p>
                         </figcaption>
                     </figure>                        
                     <div class='aa-product-hvr-content'>
@@ -31,5 +38,23 @@
                     <span class='aa-badge aa-hot' href='#'>HOT!</span>                   
                 </li>";
         }
+    }
+
+    public function QueryItems()
+    {
+      if(isset($_GET['sort'])){
+        $sorts= $_GET['sort'];
+        $new_query="SELECT * FROM products where category=N'$sorts' order by id desc limit 12";
+      }elseif (isset($_GET['fill'])) {
+        $ratings= $_GET['fill'];
+        $new_query="SELECT * FROM products where ratings = '$ratings' order by id limit 12";
+      }elseif(isset($_GET['search'])){
+        $search = $_GET['search'];
+        $new_query="SELECT * FROM products where category = N'$search' or name =N'$search' order by id limit 12";
+      }
+      else{
+        $new_query="SELECT * FROM products order by id desc limit 12";
+      }
+      return $new_query;
     }
  }

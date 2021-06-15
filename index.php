@@ -1,7 +1,6 @@
 <?php
   // ini_set("display_errors","0");
   // $loi="";
-  $ReturnURL = base64_encode($_SERVER['REQUEST_URI']);
   require 'vendor/autoload.php';
   $list_prod = new ListProduct();
   require_once 'Component/layouts/header.php';

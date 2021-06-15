@@ -3,6 +3,7 @@
   require 'vendor/autoload.php';
   $CheckH = new HeaderAC();
   $CheckH->CartCheck();
+  $className="";
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +25,7 @@
     <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
   </head>
-<body>   
+<body <?php echo $className ?>>   
 <a class="scrollToTop" href="#"><i class="fa fa-chevron-up"></i></a>
 <header id="aa-header">
     <!-- start header top  -->
