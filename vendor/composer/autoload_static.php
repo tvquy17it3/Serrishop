@@ -9,6 +9,7 @@ class ComposerStaticInit6d15ad4e3d0cc572d8f0a48f335330ca
     public static $files = array (
         'bf47b21952aff88ba25da4ea316e5a78' => __DIR__ . '/../..' . '/model/database.php',
         'b6d189aa526839466ffcf86dc9aad1a7' => __DIR__ . '/../..' . '/Component/list_product.php',
+        'c6ca8ff28be542d6e190c4d555a9132b' => __DIR__ . '/../..' . '/Component/hearderac.php',
     );
 
     public static $classMap = array (

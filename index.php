@@ -1,33 +1,13 @@
 <?php
-  session_start();
   // ini_set("display_errors","0");
   // $loi="";
   $ReturnURL = base64_encode($_SERVER['REQUEST_URI']);
   require 'vendor/autoload.php';
-  $list_prod = new ListItems();
+  $list_prod = new ListProduct();
+  require_once 'Component/layouts/header.php';
+?>
 
-?>
-<?php
-  $prd = 0;
-  $th = 0;
-  if(isset($_SESSION['cart']))
-  {
-    $prd = count($_SESSION['cart']);
-    $th = $prd;
-    if ($prd==0) {
-      unset($_SESSION['cart']);
-    }
-  }
-?>
- 
-<?php 
-  require_once 'layouts/header.php';
-  include("connect.php");
-?>
   <!-- Start header section -->
-<?php 
-  require_once "menu.php";
-?>
   <!-- Start slider -->
   <section id="aa-slider">
     <div class="aa-slider-area">
@@ -37,14 +17,14 @@
             <!-- single slide item -->
             <li>
               <div class="seq-model">
-                <img data-seq src="img/slider/banner2.jpg" alt="slide img" />
+                <img data-seq src="public/img/slider/banner2.jpg" alt="slide img" />
               </div>
              
             </li>
             <!-- single slide item -->
             <li>
               <div class="seq-model">
-                <img data-seq src="img/slider/banner1.jpg" alt="slide img" />
+                <img data-seq src="public/img/slider/banner1.jpg" alt="slide img" />
               </div>
             </li>
             <!-- single slide item -->   
@@ -75,7 +55,7 @@
               <div class="col-md-5 no-padding" >                
                 <div class="aa-promo-left" >
                   <div class="aa-promo-banner" >                    
-                    <img src="img/women/anhduoibn1.jpg" alt="img" style="height: 570px">
+                    <img src="public/img/women/anhduoibn1.jpg" alt="img" style="height: 570px">
                     <div class="aa-prom-content">
                       <span>25% Off</span>
                       <h4><a href="#">Serri X Allure By Reia</a></h4>                      
@@ -88,7 +68,7 @@
                 <div class="aa-promo-right">
                   <div class="aa-single-promo-right">
                     <div class="aa-promo-banner">                      
-                      <img src="img/women/W1.jpg" alt="img">                      
+                      <img src="public/img/women/W1.jpg" alt="img">                      
                       <div class="aa-prom-content">
                         <span>MOTF PREMIUM</span>
                         <h4><a href="#"></a></h4>                        
@@ -97,7 +77,7 @@
                   </div>
                   <div class="aa-single-promo-right">
                     <div class="aa-promo-banner">                      
-                      <img src="img/women/anhduoibn2.jpg.png" alt="img">                      
+                      <img src="public/img/women/anhduoibn2.jpg.png" alt="img">                      
                       <div class="aa-prom-content">
                         <span>Sale Off</span>
                         <h4><a href="#">#dailydrops</a></h4>                        
@@ -106,7 +86,7 @@
                   </div>
                   <div class="aa-single-promo-right">
                     <div class="aa-promo-banner">                      
-                      <img src="img/women/anhduoibn3.jpg.png" alt="img">                      
+                      <img src="public/img/women/anhduoibn3.jpg.png" alt="img">                      
                       <div class="aa-prom-content">
                         <span>New</span>
                         <h4><a href="#">Serri BASICS</a></h4>                        
@@ -115,7 +95,7 @@
                   </div>
                   <div class="aa-single-promo-right">
                     <div class="aa-promo-banner">                      
-                      <img src="img/women/W2.jpg" alt="img">                      
+                      <img src="public/img/women/W2.jpg" alt="img">                      
                       <div class="aa-prom-content">
                         <span>15% Off</span>                      
                       </div>
@@ -183,7 +163,7 @@
         <div class="col-md-12">        
           <div class="row">
             <div class="aa-banner-area">
-            <a href="#"><img src="img/index/bn34.jpg" alt="fashion banner img"></a>
+            <a href="#"><img src="public/img/index/bn34.jpg" alt="fashion banner img"></a>
           </div>
           </div>
         </div>
@@ -272,7 +252,7 @@
               <div class="col-md-4 col-sm-4">
                 <div class="aa-latest-blog-single">
                   <figure class="aa-blog-img">                    
-                    <a href="#"><img src="img/index/blog1.jpg" alt="img"></a>  
+                    <a href="#"><img src="public/img/index/blog1.jpg" alt="img"></a>  
                       <figcaption class="aa-blog-img-caption">
                       <span href="#"><i class="fa fa-eye"></i>15K</span>
                       <a href="#"><i class="fa fa-thumbs-o-up"></i>826</a>
@@ -291,7 +271,7 @@
               <div class="col-md-4 col-sm-4">
                 <div class="aa-latest-blog-single">
                   <figure class="aa-blog-img">                    
-                    <a href="#"><img src="img/index/blog2.jpg" alt="img"></a>  
+                    <a href="#"><img src="public/img/index/blog2.jpg" alt="img"></a>  
                       <figcaption class="aa-blog-img-caption">
                       <span href="#"><i class="fa fa-eye"></i>25K</span>
                       <a href="#"><i class="fa fa-thumbs-o-up"></i>1226</a>
@@ -310,7 +290,7 @@
               <div class="col-md-4 col-sm-4">
                 <div class="aa-latest-blog-single">
                   <figure class="aa-blog-img">                    
-                    <a href="#"><img src="img/index/blog3.jpg" alt="img"></a>  
+                    <a href="#"><img src="public/img/index/blog3.jpg" alt="img"></a>  
                       <figcaption class="aa-blog-img-caption">
                       <span href="#"><i class="fa fa-eye"></i>28K</span>
                       <a href="#"><i class="fa fa-thumbs-o-up"></i>1426</a>
@@ -340,14 +320,14 @@
         <div class="col-md-12" >
           <div class="aa-client-brand-area" >
             <ul class="aa-client-brand-slider" >
-              <li><a href="#"><img src="img/index/sl1.jpg" alt="java img"></a></li>
-              <li><a href="#"><img src="img/index/sl2.jpg" alt="java img"></a></li>
-              <li><a href="#"><img src="img/index/sl4.jpg" alt="java img"></a></li>
-              <li><a href="#"><img src="img/index/sl5.jpg" alt="java img"></a></li>
-              <li><a href="#"><img src="img/index/sl6.jpg" alt="java img"></a></li>
-              <li><a href="#"><img src="img/index/sl7.jpg" alt="java img"></a></li>
-              <li><a href="#"><img src="img/index/sl8.jpg" alt="java img"></a></li>
-              <li><a href="#"><img src="img/index/sl9.jpg" alt="java img"></a></li>
+              <li><a href="#"><img src="public/img/index/sl1.jpg" alt="java img"></a></li>
+              <li><a href="#"><img src="public/img/index/sl2.jpg" alt="java img"></a></li>
+              <li><a href="#"><img src="public/img/index/sl4.jpg" alt="java img"></a></li>
+              <li><a href="#"><img src="public/img/index/sl5.jpg" alt="java img"></a></li>
+              <li><a href="#"><img src="public/img/index/sl6.jpg" alt="java img"></a></li>
+              <li><a href="#"><img src="public/img/index/sl7.jpg" alt="java img"></a></li>
+              <li><a href="#"><img src="public/img/index/sl8.jpg" alt="java img"></a></li>
+              <li><a href="#"><img src="public/img/index/sl9.jpg" alt="java img"></a></li>
             </ul>
           </div>
         </div>
@@ -356,6 +336,6 @@
   </section>
   <!-- / Client Brand -->
    <?php 
-      require 'layouts/Subscribe.php';
-      require 'layouts/footer.php'; 
+      require_once 'Component/layouts/Subscribe.php';
+      require_once 'Component/layouts/footer.php'; 
    ?>

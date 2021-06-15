@@ -1,7 +1,7 @@
 <?php
  require 'vendor/autoload.php';
 
- class ListItems extends database{
+ class ListProduct extends database{
     public function Product($sql)
     {   
         $ReturnURL = base64_encode($_SERVER['REQUEST_URI']);            

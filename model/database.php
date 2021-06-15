@@ -7,7 +7,7 @@ class database{
     private $pass ="";
     private $db ="serrishop";
     private $result =null;
-
+    
     private function connect()
     {
         $this->conn= new mysqli($this->host,$this->user,$this->pass,$this->db)

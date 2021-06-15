@@ -101,7 +101,7 @@
                 <input type="text" placeholder=""  name="username" id="username">
                 <label for="">Mật khẩu<span>*</span></label>
                 <input type="password" placeholder="" name="password" id="password">
-                <button class="aa-browse-btn" id="submit" onclick="validate()">Đăng nhập</button>
+                <button class="aa-browse-btn" id="submit">Đăng nhập</button>
                 <label for="rememberme" class="rememberme"><input type="checkbox" id="rememberme"> Ghi nhớ tài khoản </label>
                 <p class="aa-lost-password"><a href="#">Bạn quên mật khẩu?</a></p>
                 <div class="aa-register-now">
@@ -116,23 +116,23 @@
   <!-- jQuery library -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <!-- Include all compiled plugins (below), or include individual files as needed -->
-  <script src="js/bootstrap.js"></script>  
+  <script src="public/js/bootstrap.js"></script>  
   <!-- SmartMenus jQuery plugin -->
-  <script type="text/javascript" src="js/jquery.smartmenus.js"></script>
+  <script type="text/javascript" src="public/js/jquery.smartmenus.js"></script>
   <!-- SmartMenus jQuery Bootstrap Addon -->
-  <script type="text/javascript" src="js/jquery.smartmenus.bootstrap.js"></script>  
+  <script type="text/javascript" src="public/js/jquery.smartmenus.bootstrap.js"></script>  
   <!-- To Slider JS -->
-  <script src="js/sequence.js"></script>
-  <script src="js/sequence-theme.modern-slide-in.js"></script>  
+  <script src="public/js/sequence.js"></script>
+  <script src="public/js/sequence-theme.modern-slide-in.js"></script>  
   <!-- Product view slider -->
-  <script type="text/javascript" src="js/jquery.simpleGallery.js"></script>
-  <script type="text/javascript" src="js/jquery.simpleLens.js"></script>
+  <script type="text/javascript" src="public/js/jquery.simpleGallery.js"></script>
+  <script type="text/javascript" src="public/js/jquery.simpleLens.js"></script>
   <!-- slick slider -->
-  <script type="text/javascript" src="js/slick.js"></script>
+  <script type="text/javascript" src="public/js/slick.js"></script>
   <!-- Price picker slider -->
-  <script type="text/javascript" src="js/nouislider.js"></script>
+  <script type="text/javascript" src="public/js/nouislider.js"></script>
   <!-- Custom js -->
-  <script src="js/custom.js"></script> 
+  <script src="public/js/custom.js"></script> 
   <!-- <script src="js/login.js"></script>  -->
   </body>
 </html>
