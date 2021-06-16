@@ -122,8 +122,12 @@
   <!-- SmartMenus jQuery Bootstrap Addon -->
   <script type="text/javascript" src="public/js/jquery.smartmenus.bootstrap.js"></script>  
   <!-- To Slider JS -->
-  <script src="public/js/sequence.js"></script>
-  <script src="public/js/sequence-theme.modern-slide-in.js"></script> 
+
+ <!-- INDEX.PHP -->
+  <!-- <script src="public/js/sequence.js"></script>
+  <script src="public/js/sequence-theme.modern-slide-in.js"></script>  -->
+  <!-- INDEX.PHP -->
+
   <!-- Product view slider -->
   <script type="text/javascript" src="public/js/jquery.simpleGallery.js"></script>
   <script type="text/javascript" src="public/js/jquery.simpleLens.js"></script>

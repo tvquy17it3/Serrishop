@@ -334,6 +334,8 @@
     </div>
   </section>
   <!-- / Client Brand -->
+  <script src="public/js/sequence.js"></script>
+  <script src="public/js/sequence-theme.modern-slide-in.js"></script> 
    <?php 
       require_once 'Component/layouts/Subscribe.php';
       require_once 'Component/layouts/footer.php'; 

@@ -1,12 +1,9 @@
 <?php
-  // session_start();
-  // ini_set("display_errors","0");
-  // $loi="";
   $ReturnURL = base64_encode($_SERVER['REQUEST_URI']);
   require 'vendor/autoload.php';
+  $className="class='productPage'";
   require_once 'Component/layouts/header.php';
   $list_prod = new ListProduct();
-  $className="productPage";
 ?>
   <!-- catg header banner section -->
   <section id="aa-catg-head-banner">
@@ -132,14 +129,14 @@
                <form action="">
                   <div id="skipstep" class="noUi-target noUi-ltr noUi-horizontal noUi-background">
                   </div>
-                  <span id="skip-value-lower" class="example-val">50.000</span> 
-                  <span id="skip-value-upper" class="example-val">100.000</span>
+                  <span id="skip-value-lower" class="example-val" name="min">50.000</span> 
+                  <span id="skip-value-upper" class="example-val" name="max">100.000</span>
                   <button class="aa-filter-btn" type="submit" style="margin:15px; ">Lọc</button>
                </form>
               </div>              
-
             </div>
             <!-- single sidebar -->
+
             <div class="aa-sidebar-widget">
               <h3>Màu sắc</h3>
               <div class="aa-color-tag">
@@ -192,3 +189,4 @@
       require_once 'Component/layouts/Subscribe.php';
       require_once 'Component/layouts/footer.php'; 
    ?>
+   

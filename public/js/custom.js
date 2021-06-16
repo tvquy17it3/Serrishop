@@ -243,20 +243,20 @@ jQuery(function($){
         noUiSlider.create(skipSlider, {
             range: {
                 'min': 0,
-                '10%': 50,
-                '20%': 100,
-                '30%': 200,
-                '40%': 500,
-                '50%': 800,
-                '60%': 1000,
-                '70%': 1500,
-                '80%': 2000,
-                '90%': 3000,
-                'max': 10000
+                '10%': 50000,
+                '20%': 100000,
+                '30%': 200000,
+                '40%': 500000,
+                '50%': 800000,
+                '60%': 1000000,
+                '70%': 1500000,
+                '80%': 2000000,
+                '90%': 3000000,
+                'max': 5000000
             },
             snap: true,
             connect: true,
-            start: [100, 500]
+            start: [100000, 500000]
         });
         // for value print
         var skipValues = [
@@ -265,7 +265,8 @@ jQuery(function($){
         ];
 
         skipSlider.noUiSlider.on('update', function( values, handle ) {
-          skipValues[handle].innerHTML = values[handle] +"0đ ";
+          var values1 = new Intl.NumberFormat().format(values[handle]);
+          skipValues[handle].innerHTML = values1 +"đ ";
         });
       }
     });
