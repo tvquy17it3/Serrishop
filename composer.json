@@ -3,7 +3,8 @@
         "files": [
             "./model/database.php",
             "./Component/list_product.php",
-            "./Component/hearderac.php"
+            "./Component/hearderac.php",
+            "./Component/auth.php"
 
         ]
     }

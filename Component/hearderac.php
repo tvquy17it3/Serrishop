@@ -28,11 +28,12 @@ class HeaderAC extends database{
     public function User()
     {   
         $this->ReturnURL= base64_encode($_SERVER['REQUEST_URI']);
-        if (isset($_SESSION['username']))
+        if (isset($_SESSION['email']))
         { 
-            $name= $_SESSION['username'];
+            $email= $_SESSION['email'];
+            $pass = $_SESSION['password'];
             // $pass1=$_SESSION['password'];            
-            $this->select("SELECT * FROM users where email='$name'");
+            $this->select("SELECT * from users where email = '$email' and password = '$pass'");
             while ($user=$this->fetch()){
                 $this->level   = $user->active;
                 $this->name    = $user->name;
