@@ -32,7 +32,7 @@ class database{
         }
         return $rows;
     }
-    //inser update, detele
+    //insert update, detele
 
     public function command($sql)
     {
