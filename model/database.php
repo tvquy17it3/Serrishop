@@ -6,7 +6,7 @@ class database{
     private $user="root";
     private $pass ="";
     private $db ="serrishop";
-    private $result = null;
+    protected $result = null;
     protected $statement = null;
     protected $table="";
     protected $limit = 20;
@@ -42,12 +42,39 @@ class database{
         return $this;
     }
 
-
     public function get()
     {
         $sql = "SELECT * FROM $this->table LIMIT ? OFFSET ?";
         $this->statement = $this->conn->prepare($sql);
         $this->statement->bind_param('ii', $this->limit,$this->offset);
+        $this->statement->execute();
+        $this->resetQuery();
+
+        $result = $this->statement->get_result();
+        $returnData =[];
+        while($rows=$result->fetch_object()){
+            $returnData[]=$rows;
+        }
+        
+        return $returnData;
+    }
+
+    public function where($data =[])
+    {
+        //SELECT * FROM users WHERE email=11 and pass=11  order by id limit 8
+        $keyValues=[];
+        foreach($data as $key =>$values){
+            $keyValues[] = $key.'=?';
+        }
+    
+        $setField =implode(' and ',$keyValues);
+        $values = array_values($data);
+        $values[]=$this->limit;
+
+        $sql ="SELECT* FROM $this->table WHERE $setField ORDER BY id DESC LIMIT ?";
+        $this->statement=$this->conn->prepare($sql);
+        $dataType = str_repeat('s',count($data)).'i';
+        $this->statement->bind_param($dataType,...$values);
         $this->statement->execute();
         $this->resetQuery();
 
@@ -75,9 +102,25 @@ class database{
         return $this->statement->affected_rows;
     }
 
-    public function update()
+    public function update($id,$data= [])
     {
-        # code...
+        $keyValues =[];
+        foreach($data as $key =>$values){
+            $keyValues[]=$key.'=?';
+        }
+        $setField =implode(',',$keyValues);
+        $values = array_values($data);
+        $values[]=$id;
+
+        $sql = "UPDATE $this->table SET $setField WHERE id=?";
+        $this->statement=$this->conn->prepare($sql);
+        $dataType = str_repeat('s',count($data)).'i';
+        $this->statement->bind_param($dataType,...$values);
+        $this->statement->execute();
+        $this->resetQuery();
+
+        return $this->statement->affected_rows;
+
     }
     public function delete($id)
     {
@@ -121,3 +164,8 @@ class database{
     }
 
 }
+
+// $this->statement->affected_rows;
+// > 0 đại diện cho số dòng bị ảnh hưởng bới các truy vấn.
+// 0 nếu không có dòng nào bị ảnh hưởng.
+// -1 nếu có lỗi xảy ra.
