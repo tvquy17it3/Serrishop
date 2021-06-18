@@ -24,6 +24,15 @@ class Auth extends database{
         
     }
 
+    public function Validate_email($email)
+    {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     public function Chechauth()
     {
         if(isset($_SESSION['email'])){

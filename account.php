@@ -5,10 +5,31 @@
   require_once 'Component/layouts/header.php';
   $auth = new Auth();
   $auth->Chechauth();
+
+  class Account extends Auth{
+    public function Login_form($email,$pass)
+    {
+      if (!$this->Validate_email($email)) {
+        echo "<p style='color: red'>Email không đúng định dạng!</p>";
+     }else{
+       $user = $this->Login($email,$pass);
+       if($user){
+         if (isset($_GET["return_url"])) {
+           $return_url = base64_decode($_GET["return_url"]);
+           echo("<script>location.href = '$return_url';</script>");
+         } 
+          echo("<script>location.href = 'index.php';</script>");
+       }else{
+         echo "<p style='color: red'>Sai email hoặc mật khẩu!</p>";
+       }
+     }
+    }
+  }
+
+$account = new Account();
 ?>
   <?php 
-  include("connect.php");
-
+    include("connect.php");
   ?>
 
  <!-- Cart view section -->
@@ -22,20 +43,11 @@
                 <div class="aa-myaccount-login" style="margin-bottom: 15px;">
                 <h4>Đăng nhập</h4>
                   <?php
-                    if (isset($_POST["submitlogin"])) {
-                      $email = $_POST["email1"];
-                      $pass= $_POST["password1"];
-                      $user = $auth->Login($email,$pass);
-                      if($user){
-                        if (isset($_GET["return_url"])) {
-                          $return_url = base64_decode($_GET["return_url"]);
-                          echo("<script>location.href = '$return_url';</script>");
-                        } 
-                         echo("<script>location.href = 'index.php';</script>");
-                      }else{
-                        echo "<p style='color: red'>Sai email hoac mat khau!!</p>";
+                      if (isset($_POST["submitlogin"])) {
+                        $email = $_POST["email1"];
+                        $pass= $_POST["password1"];
+                        $account->Login_form($email,$pass);
                       }
-                    }
                   ?>          
           <form method="post" action="">
                 <label id="result"></label><br/>
