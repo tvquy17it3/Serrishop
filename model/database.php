@@ -11,6 +11,7 @@ class database{
     protected $table="";
     protected $limit = 20;
     protected $offset= 0;
+    protected $and_or ='AND';
     
     private function connect()
     {
@@ -42,6 +43,16 @@ class database{
         return $this;
     }
 
+    public function condition($condition)
+    {
+        if($condition != 'or'){
+            $this->and_or='and';
+        }else{
+            $this->and_or=$condition;
+        }
+        return $this;
+    }
+
     public function get()
     {
         $sql = "SELECT * FROM $this->table LIMIT ? OFFSET ?";
@@ -55,22 +66,80 @@ class database{
         while($rows=$result->fetch_object()){
             $returnData[]=$rows;
         }
+        return $returnData;
+    }
+
+    public function find_id($id)
+    {
+        $sql = "SELECT * FROM $this->table WHERE id = ?";
+        $this->statement= $this->conn->prepare($sql);
+        $this->statement->bind_param('i',$id);
+        $this->statement->execute();
+        $this->resetQuery();
+
+        $result = $this->statement->get_result();
+        $returnData =[];
+        while($rows=$result->fetch_object()){
+            $returnData[]=$rows;
+        }
         
         return $returnData;
     }
 
-    public function where($data =[])
+    public function search($keyword)
     {
-        //SELECT * FROM users WHERE email=11 and pass=11  order by id limit 8
+        $keywords = explode(' ', $keyword);
+        $searchTermKeywords = array();
+        $values= array();
+        foreach ($keywords as $word) 
+        {
+            $searchTermKeywords[] = "name LIKE ?";
+            $values[]="%{$word}%";
+        }
+        $like = implode(' OR ', $searchTermKeywords);
+        $sql="SELECT * FROM $this->table WHERE $like LIMIT ?";
+        $this->statement=$this->conn->prepare($sql);
+        $dataType = str_repeat('s',count($values)).'i'; 
+        $values[]=$this->limit;
+        $this->statement->bind_param($dataType,...$values);
+        $this->statement->execute();
+        $this->resetQuery();
+
+        $result = $this->statement->get_result();
+        $returnData =[];
+        while($rows=$result->fetch_object()){
+            $returnData[]=$rows;
+        }
+        
+        return $returnData;
+    }
+
+    public function where($value1,$condition,$value2)
+    {   
+        $sql ="SELECT* FROM $this->table WHERE $value1 $condition ? ORDER BY id DESC LIMIT ?";
+        $this->statement=$this->conn->prepare($sql);
+        $this->statement->bind_param('si',$value2,$this->limit);
+        $this->statement->execute();
+        $this->resetQuery();
+
+        $result = $this->statement->get_result();
+        $returnData =[];
+        while($rows=$result->fetch_object()){
+            $returnData[]=$rows;
+        }
+        
+        return $returnData;
+    }
+
+    public function whereAnd($data =[])
+    {
         $keyValues=[];
         foreach($data as $key =>$values){
-            $keyValues[] = $key.'=?';
+            $keyValues[] = str_replace( array('+', '@') , '', $key ).'=?';
         }
-    
-        $setField =implode(' and ',$keyValues);
+        $setField =implode(' '.$this->and_or.' ',$keyValues);
         $values = array_values($data);
         $values[]=$this->limit;
-
         $sql ="SELECT* FROM $this->table WHERE $setField ORDER BY id DESC LIMIT ?";
         $this->statement=$this->conn->prepare($sql);
         $dataType = str_repeat('s',count($data)).'i';

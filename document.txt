@@ -1,15 +1,25 @@
 require 'vendor/autoload.php';
 $db = new database();
 
-1. get()
-dang: "SELECT * FROM $this->table LIMIT ? OFFSET ?"
+1. get() tham số truyền vào gồm tên table(), có thể thêm limit() offset(), mặc định limit =25 và offset =0(từ bản ghi đầu tiên), thêm get(); cuối.
+SQL: "SELECT * FROM $this->table LIMIT ? OFFSET ?"
 vi du:
 $results = $db->table('name_table')->limit(number)->offset(number)->get();
 foreach($results as $values){
     echo $values->id;
 }
 
-2. where()
+2. WhereAnd() : table('truyền tên table')->where(data[]);
+nếu count(data[]) >=2, mặc định where condition là 'and' hoặc có thể thay bằng ->condition('or');
+table('name_table')->condition('or')->where(data[]);
+nếu 2 key giống nhau thì thêm @ vào key;
+vd: $where1 = $db->table('products')->condition('or')
+	      ->where([
+		        'rating'=>'5',
+    		    '@rating'=>'4'
+	       ]);
+
+vd: SELECT * FROM name_table WHERE email= email and  password=pass
 $where1 = $db->table('name_table')
 	      ->where([
 		        'email'=>'email',
