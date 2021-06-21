@@ -33,11 +33,12 @@ $db = new database();
 
 // $findid = $db->table('users')->find_id(1);
 // print_r($findid);
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
 
-$search = $db->table('products')->limit(3)->search('Dam');
-print_r($search);
+// $search = $db->table('products')->limit(3)->search('Dam');
+// print_r($search);
+
 // UPDATE
 // $db->table('users')->update(7,[
 //     'name'=> 'Văn Quý 123',
@@ -71,3 +72,19 @@ print_r($search);
 // WHERE ((users.id) 
 // AND (stores.user_id) 
 // AND (products.user_id))
+
+
+include("connect.php");
+
+
+$sql = "SELECT orders.id, orders.order_date, users.name, users.email, users.address 
+        FROM orders,users
+        WHERE orders.user_id = users.id";
+
+$rs = $db->select($sql);
+while($rss= $db->fetch()){
+    print_r($rss);
+}
+
+//CREATE TABLE
+

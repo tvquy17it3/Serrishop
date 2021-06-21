@@ -228,8 +228,11 @@ class database{
 
     public function command($sql)
     {
-        $this->connect();
-        $this->conn->query($sql);
+        // $this->connect();
+        // $this->conn->query($sql);
+        $this->statement=$this->conn->prepare($sql);
+        $this->statement->execute();
+        return $this->statement->affected_rows;
     }
 
 }
@@ -238,3 +241,40 @@ class database{
 // > 0 đại diện cho số dòng bị ảnh hưởng bới các truy vấn.
 // 0 nếu không có dòng nào bị ảnh hưởng.
 // -1 nếu có lỗi xảy ra.
+
+
+class tableDB extends database{
+    public function orders()
+    {   
+        $sql = "CREATE TABLE orders (
+            id INT(9) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            user_id INT(9) UNSIGNED NOT NULL,
+            name VARCHAR(50) NOT NULL,
+            address VARCHAR(200) NOT NULL,
+            phone CHAR(20) NOT NULL,
+            discount FLOAT NOT NULL DEFAULT 0,
+            shipping_fee fLOAT NOT NULL DEFAULT 0,
+            shipping_code CHAR(50),
+            order_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            order_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            order_status INT(3)
+            ) DEFAULT CHARSET=utf8";
+
+        $rs = $this->command($sql);
+        echo $rs;
+        
+    }
+
+    public function drop_orders(Type $var = null)
+    {
+        $sql ="DROP TABLE orders";
+        $rs = $this->command($sql);
+        echo $rs;
+
+    }
+
+}
+
+// $dbs = new tableDB();
+// $dbs->orders();
+// $db->drop_orders();
